@@ -14,8 +14,12 @@ enum class EntityType : int
 	EnemyPlayer,
 	FriendlyPlayer,
 	Butcher,
+	Spider,
 	Zombie,
 	Immolator,
+	Dog,
+	WaterDevil,
+	MeatHead,
 };
 
 class WorldEntity
@@ -47,7 +51,11 @@ private:
 		{EntityType::FriendlyPlayer, L"Friendly Player"},
 		{EntityType::Butcher, L"Butcher"},
 		{EntityType::Zombie, L"Zombie"},
-		{EntityType::Immolator, L"Immolator"}
+		{EntityType::Dog, L"Dog"},
+		{EntityType::Immolator, L"Immolator"},
+		{EntityType::Spider, L"Spider"},
+		{EntityType::WaterDevil, L"Water Devil"},
+		{EntityType::MeatHead, L"Fat BOI"}
 	};
 public:
 	WorldEntity( uint64_t classptr);

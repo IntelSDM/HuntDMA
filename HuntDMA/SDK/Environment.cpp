@@ -164,9 +164,33 @@ void Environment::CacheEntities()
 			tempzombielist.push_back(ent);
 			continue;
 		}
+		if (strstr(ent->GetEntityClassName().name, "special_spider") != NULL)
+		{
+			ent->SetType(EntityType::Spider);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "dog_base") != NULL)
+		{
+			ent->SetType(EntityType::Dog);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "Waterdevil") != NULL)
+		{
+			ent->SetType(EntityType::WaterDevil);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name )== "special_meathead")
+		{
+			ent->SetType(EntityType::MeatHead);
+			tempzombielist.push_back(ent);
+			continue;
+		}
 
 	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityName().name);
+	//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
 		//printf(LIT("Entity Class: %s\n"), ent->GetEntityClassName().name);
 	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
 	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());

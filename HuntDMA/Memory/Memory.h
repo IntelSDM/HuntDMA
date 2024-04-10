@@ -259,6 +259,8 @@ public:
 	template <typename T>
 	bool AddScatterWriteRequest(VMMDLL_SCATTER_HANDLE handle, uint64_t addr, T value) const
 	{
+		if (!(addr > 0x2000000 && addr < 0x7FFFFFFFFFFF))
+			return false;
 		bool ret = !VMMDLL_Scatter_PrepareWrite(handle, addr, reinterpret_cast<PBYTE>(&value), sizeof(value));
 		if (!ret)
 		{

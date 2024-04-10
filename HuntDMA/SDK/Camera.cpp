@@ -15,7 +15,7 @@ Vector2 Camera::WorldToScreen(Vector3 pos)
 	Vector3 vAxisX, vAxisY, vAxisZ;
 	Vector2 ScreenLocation;
 	Vector4 transformed, projected;
-	int pViewport[4] = { 0, 0, 1440, 2560 };
+	int pViewport[4] = { 0, 0, 2560, 1440 };
 
 	transformed.x = (float)(pos.x * RenderMatrix.matrix[0][0]) + (float)(pos.y * RenderMatrix.matrix[1][0]) + (float)(pos.z * RenderMatrix.matrix[2][0]) + RenderMatrix.matrix[3][0];
 	transformed.y = (float)(pos.x * RenderMatrix.matrix[0][1]) + (float)(pos.y * RenderMatrix.matrix[1][1]) + (float)(pos.z * RenderMatrix.matrix[2][1]) + RenderMatrix.matrix[3][1];
@@ -54,6 +54,5 @@ Vector2 Camera::WorldToScreen(Vector3 pos)
 	ScreenLocation.x = pViewport[0] + (1 + projected.x) * pViewport[2] / 2;
 	ScreenLocation.y = pViewport[1] + (1 - projected.y) * pViewport[3] / 2;  //flip coords for y axis
 //	ScreenLocation.z = projected.z;
-
 	return ScreenLocation;
 }
