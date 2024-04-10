@@ -4,6 +4,7 @@
 WorldEntity::WorldEntity( uint64_t entity)
 {
 	this->Class = entity;
+	this->ClassAddress = entity;
 
 }
 void WorldEntity::SetUp(VMMDLL_SCATTER_HANDLE handle)
@@ -32,11 +33,25 @@ void WorldEntity::SetUp3(VMMDLL_SCATTER_HANDLE handle)
 	TargetProcess.AddScatterReadRequest(handle, RenderNodePointer, &Node, sizeof(RenderNode));
 }
 
-void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle)
+void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle,uint32_t colour)
 {
-	uint32_t RGBAColor = 0xFF000000;
 	if (RenderNodePointer != 0)
 	{
-		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x3c, &RGBAColor, sizeof(uint32_t));
+		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x3c, &colour, sizeof(uint32_t));
 	}
+}
+
+void WorldEntity::UpdatePosition(VMMDLL_SCATTER_HANDLE handle)
+{
+	TargetProcess.AddScatterReadRequest(handle, this->Class + PosOffset, &Position, sizeof(Vector3));
+}
+
+void WorldEntity::UpdateNode(VMMDLL_SCATTER_HANDLE handle)
+{
+	TargetProcess.AddScatterReadRequest(handle, RenderNodePointer, &Node, sizeof(RenderNode));
+}
+
+void WorldEntity::UpdateClass(VMMDLL_SCATTER_HANDLE handle)
+{
+	TargetProcess.AddScatterReadRequest(handle, this->Class, &ClassAddress, sizeof(uint64_t));
 }

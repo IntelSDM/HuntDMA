@@ -92,7 +92,7 @@ void InitialiseClasses()
 
 }
 
-std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(10000, [] {
+std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(8000, [] {
 	if (EnvironmentInstance == nullptr)
 		return;
 	if (EnvironmentInstance->GetObjectCount() == 0)
@@ -133,11 +133,12 @@ void RenderFrame()
 
 	Cache->Execute();
 	UpdateCam->Execute();
-//	UpdatePlayers->Execute();
+	UpdatePlayers->Execute();
+	UpdateZombies->Execute();
 	RenderTarget->BeginDraw();
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform
-	//DrawPlayers();
+	DrawPlayers();
 	//Render();
 	RenderTarget->EndDraw();
 }

@@ -20,6 +20,56 @@ void Environment::GetEntitys()
 	EntityList = EntitySystem + EntityListOffset;
 }
 
+void Environment::UpdatePlayerList()
+{
+	if (PlayerList.size() == 0)
+	return;
+	auto handle = TargetProcess.CreateScatterHandle();
+	auto writehandle = TargetProcess.CreateScatterHandle();
+	for (std::shared_ptr<WorldEntity> ent : PlayerList)
+	{
+		if (ent == nullptr)
+			continue;
+		if (Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition()) <= 1)
+			continue; // local player, ignore
+		if (!(ent->GetClass() > 0x2000000 && ent->GetClass() < 0x7FFFFFFFFFFF))
+		{
+			ent->SetValid(false); // check if the player is still alive/ active
+			continue;
+		}
+	
+		ent->UpdateNode(handle);
+		ent->UpdatePosition(handle);
+		ent->UpdateClass(handle);
+		ent->WriteNode(writehandle, 0xFF0000FF);
+	}
+	TargetProcess.ExecuteReadScatter(handle);
+	TargetProcess.ExecuteWriteScatter(writehandle);
+}
+
+void Environment::UpdateZombieList()
+{
+	if (ZombieList.size() == 0)
+		return;
+	auto handle = TargetProcess.CreateScatterHandle();
+	auto writehandle = TargetProcess.CreateScatterHandle();
+	for (std::shared_ptr<WorldEntity> ent : ZombieList)
+	{
+		if (ent == nullptr)
+			continue;
+		if (!(ent->GetClass() > 0x2000000 && ent->GetClass() < 0x7FFFFFFFFFFF))
+		{
+			ent->SetValid(false);
+			continue;
+		}
+		ent->UpdateNode(handle);
+		ent->UpdatePosition(handle);
+		ent->UpdateClass(handle);
+		ent->WriteNode(writehandle, 0x0000FFFF);
+	}
+	TargetProcess.ExecuteReadScatter(handle);
+	TargetProcess.ExecuteWriteScatter(writehandle);
+}
 void Environment::CacheEntities()
 {
 	GetEntitys();
@@ -40,7 +90,6 @@ void Environment::CacheEntities()
 		if (entity == NULL) {
 			continue;
 		}
-		printf(LIT("Entity: 0x%X\n"), entity);
 		entitypointerlist.push_back(std::make_shared<WorldEntity>(entity));
 
 	}
@@ -81,25 +130,49 @@ void Environment::CacheEntities()
 		ent->SetUp3(handle);
 
 	}
-	TargetProcess.ExecuteReadScatter(handle);
+	std::vector<std::shared_ptr<WorldEntity>> templayerlist;
+	std::vector<std::shared_ptr<WorldEntity>> tempzombielist;
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
 			continue;
-		ent->WriteNode(handle);
-
-	}
-	TargetProcess.ExecuteWriteScatter(handle);
-	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
-	{
-		if (ent == nullptr)
+		if (strstr(ent->GetEntityClassName().name, "HunterBasic") != NULL)
+		{
+			ent->SetType(EntityType::EnemyPlayer);
+			if (ent->GetRenderNode().silhouettes_param == 0x00FFFFFF)
+			{
+				ent->SetType(EntityType::FriendlyPlayer);
+			}
+			templayerlist.push_back(ent);
 			continue;
-		printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-		printf(LIT("Entity ClassName: %s\n"), ent->GetEntityName().name);
-		printf(LIT("Entity Class: %s\n"), ent->GetEntityClassName().name);
-		printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
-		Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
-		printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
+		}
+		if (strstr(ent->GetEntityClassName().name, "Immolator") != NULL)
+		{
+			ent->SetType(EntityType::Immolator);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "grunt_base") != NULL)
+		{
+			ent->SetType(EntityType::Zombie);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "target_butcher") != NULL)
+		{
+			ent->SetType(EntityType::Butcher);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+
+	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
+//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityName().name);
+		//printf(LIT("Entity Class: %s\n"), ent->GetEntityClassName().name);
+	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
+	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
+	//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
 
 	}
+	PlayerList = templayerlist;
+	ZombieList = tempzombielist;
 }

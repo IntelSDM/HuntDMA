@@ -1,4 +1,5 @@
 #pragma once
+#include "WorldEntity.h"
 class Environment
 {
 private:
@@ -9,6 +10,8 @@ private:
 	uint64_t EntityList = 0x0;
 	uint16_t ObjectCountOffset = 0x4006A;
 	uint64_t EntityListOffset = 0x40078;
+	std::vector<std::shared_ptr<WorldEntity>> PlayerList;
+	std::vector<std::shared_ptr<WorldEntity>> ZombieList;
 public:
 	uint64_t GetSystemGlobalEnvironment() { return SystemGlobalEnvironment; }
 	uint64_t GetEntitySystem() { return EntitySystem; }
@@ -17,6 +20,9 @@ public:
 	uint64_t GetEntityList() { return EntityList; }
 	void GetEntitys();
 	void UpdatePlayerList();
+	void UpdateZombieList();
 	void CacheEntities();
 	Environment();
+	std::vector<std::shared_ptr<WorldEntity>> GetPlayerList() { return PlayerList; }
+	std::vector<std::shared_ptr<WorldEntity>> GetZombieList() { return ZombieList; }
 };

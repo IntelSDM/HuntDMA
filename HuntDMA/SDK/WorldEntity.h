@@ -9,10 +9,20 @@ struct RenderNode {
 struct EntityNameStruct {
 	char name[100];
 };
+enum class EntityType : int
+{
+	EnemyPlayer,
+	FriendlyPlayer,
+	Butcher,
+	Zombie,
+	Immolator,
+};
+
 class WorldEntity
 {
 private:
 	uint64_t Class = 0x0;
+	uint64_t ClassAddress = 0x0;
 	uint64_t PosOffset = 0x128;
 	uint64_t StringBufferOffset = 0x10;
 	uint64_t ClassPointerOffset = 0x18;
@@ -30,6 +40,15 @@ private:
 	uint64_t Slot = 0x0;
 	uint64_t RenderNodePointer = 0x0;
 	Vector3 Position;
+	EntityType Type;
+	bool Valid = true;
+	std::unordered_map<EntityType, std::wstring> Names = {
+		{EntityType::EnemyPlayer, L"Enemy Player"},
+		{EntityType::FriendlyPlayer, L"Friendly Player"},
+		{EntityType::Butcher, L"Butcher"},
+		{EntityType::Zombie, L"Zombie"},
+		{EntityType::Immolator, L"Immolator"}
+	};
 public:
 	WorldEntity( uint64_t classptr);
 	void SetUp(VMMDLL_SCATTER_HANDLE handle);
@@ -40,5 +59,14 @@ public:
 	EntityNameStruct GetEntityClassName() { return ClassName; }
 	Vector3 GetPosition() { return Position; }
 	RenderNode GetRenderNode() { return Node; }
-	void WriteNode(VMMDLL_SCATTER_HANDLE handle);
+	void SetType(EntityType type) { Type = type; }
+	EntityType GetType() { return Type; }
+	void WriteNode(VMMDLL_SCATTER_HANDLE handle, uint32_t colour);
+	void UpdatePosition(VMMDLL_SCATTER_HANDLE handle);
+	void UpdateNode(VMMDLL_SCATTER_HANDLE handle);
+	void UpdateClass(VMMDLL_SCATTER_HANDLE handle);
+	uint64_t GetClass() { return ClassAddress; }
+	bool GetValid() { return Valid; }
+	void SetValid(bool valid) { Valid = valid; }
+	std::wstring GetName() { return Names[Type]; };
 };
