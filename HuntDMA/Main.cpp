@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Memory.h"
 #include "CheatFunction.h"
-#include "PlayerNetwork.h"
+#include "Environment.h"
 #include "Globals.h"
-#include "MainCamera.h"
+#include "Camera.h"
 #include "Init.h"
 #include "GUI.h"
 
@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 255, LWA_ALPHA);
 
 	ShowWindow(hWnd, nCmdShow);
-	uint64_t SSystemGlobalEnvironment = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + 0x5EF2FA0);
+	/*uint64_t SSystemGlobalEnvironment = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + 0x5EF2FA0);
 	printf(LIT("SSystemGlobalEnvironment: 0x%X\n"), SSystemGlobalEnvironment);
 	uint64_t  EntitySystem = TargetProcess.Read<uint64_t>(SSystemGlobalEnvironment + 0xA8);
 	printf(LIT("EntitySystem: 0x%X\n"), EntitySystem);
@@ -106,7 +106,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	uint64_t EntityList = EntitySystem + 0x40078;
 	printf(LIT("EntityList: 0x%X\n"), EntityList);
 
-	uint64_t localPlayerPtr = TargetProcess.Read<uint64_t>( TargetProcess.GetBaseAddress("GameHunt.dll") + 0x59A2698);
+	uint64_t localPlayerPtr = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + 0x59A2698);
 	localPlayerPtr = TargetProcess.Read<uint64_t>(localPlayerPtr + 0x8);
 	localPlayerPtr = TargetProcess.Read<uint64_t>( localPlayerPtr + 0x18);
 	printf(LIT("localPlayerPtr: 0x%X\n"), localPlayerPtr);
@@ -150,7 +150,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	printf(LIT("m_renderProjectionMatrix[3][1]: %f\n"), m_renderProjectionMatrix.matrix[3][1]);
 	printf(LIT("m_renderProjectionMatrix[3][2]: %f\n"), m_renderProjectionMatrix.matrix[3][2]);
 	printf(LIT("m_renderProjectionMatrix[3][3]: %f\n"), m_renderProjectionMatrix.matrix[3][3]);
-
+	
 	for (unsigned int i = 0; i < NumberOfObjects; ++i) 
 	{
 		uint64_t entity = TargetProcess.Read<uintptr_t>( EntityList + i * sizeof(uint64_t));
@@ -162,12 +162,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Vector3 pos = TargetProcess.Read<Vector3>(entity + 0x128);
 		if(pos == Vector3::Zero())
 			continue;
-		//printf(LIT("Entity %d: %f %f %f\n"), i, pos.x, pos.y, pos.z);
+		printf(LIT("Entity %d: %f %f %f\n"), i, pos.x, pos.y, pos.z);
 
 		uintptr_t entityNamePtr = TargetProcess.Read<uintptr_t>( entity + 0x10);
 		entityNameStruct entityName = TargetProcess.Read<entityNameStruct>( entityNamePtr);
 		entityName.name[99] = '\0';
-		//printf(LIT("Entity Name: %s\n"), entityName.name);
+		printf(LIT("Entity Name: %s\n"), entityName.name);
 
 		uintptr_t entityClassPtr = TargetProcess.Read<uintptr_t>( entity + 0x18);
 		entityClassPtr = TargetProcess.Read<uintptr_t>( entityClassPtr + 0x10);
@@ -179,24 +179,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//	{
 
 
-			uintptr_t slotsPtr = TargetProcess.Read<uintptr_t>( entity + 0xA8);
-			printf(LIT("slotsPtr: 0x%X\n"), slotsPtr);
-			if (slotsPtr == 0)
-				continue;
-			uintptr_t slotPtr = TargetProcess.Read<uintptr_t>(slotsPtr + 0);
-			printf(LIT("slotPtr: 0x%X\n"), slotPtr);
-			if (slotPtr == 0)
-				continue;
-			uintptr_t renderNodePtr = TargetProcess.Read<uintptr_t>(slotPtr + 0xA8);
-			printf(LIT("renderNodePtr: 0x%X\n"), renderNodePtr);
-			if (renderNodePtr == 0)
-				continue;
-			renderNode rNode = TargetProcess.Read<renderNode>(renderNodePtr);
+	//		uintptr_t slotsPtr = TargetProcess.Read<uintptr_t>( entity + 0xA8);
+	//		printf(LIT("slotsPtr: 0x%X\n"), slotsPtr);
+	//		if (slotsPtr == 0)
+	//			continue;
+	//		uintptr_t slotPtr = TargetProcess.Read<uintptr_t>(slotsPtr + 0);
+//			printf(LIT("slotPtr: 0x%X\n"), slotPtr);
+//			if (slotPtr == 0)
+	//			continue;
+	//		uintptr_t renderNodePtr = TargetProcess.Read<uintptr_t>(slotPtr + 0xA8);
+	//		printf(LIT("renderNodePtr: 0x%X\n"), renderNodePtr);
+	//		if (renderNodePtr == 0)
+	//			continue;
+	//		renderNode rNode = TargetProcess.Read<renderNode>(renderNodePtr);
 
-			uint32_t RGBAColor = colorType::Red;
-			TargetProcess.Write<uint32_t>(renderNodePtr + 0x3c, RGBAColor);
+		//	uint32_t RGBAColor = colorType::Red;
+		//	TargetProcess.Write<uint32_t>(renderNodePtr + 0x3c, RGBAColor);
 			//}
-	}
+	}*/
+
 	InitD2D(hWnd);
 	CreateGUI();
 	MSG msg;

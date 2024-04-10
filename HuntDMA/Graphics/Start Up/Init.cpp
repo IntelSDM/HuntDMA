@@ -9,11 +9,8 @@ IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
 ID2D1SolidColorBrush* Brush;
 
-std::shared_ptr<PlayerNetwork> BasePlayer;
-std::shared_ptr<MainCamera> Camera;
-std::shared_ptr<PlayerNetwork> CurrentLocalPlayer;
 
-
+std::shared_ptr<Environment> EnvironmentInstance;
 
 void InitD2D(HWND hWnd)
 {
@@ -34,7 +31,7 @@ void InitD2D(HWND hWnd)
 	RenderTarget->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE); // set aa mode
 }
 std::shared_ptr<CheatFunction> UpdateViewMatrix = std::make_shared<CheatFunction>(5, []() {
-	Camera->UpdateViewMatrix();
+
 	});
 
 void CleanD2D()
@@ -90,13 +87,12 @@ int FrameRate()
 
 void InitialiseClasses()
 {
-	BasePlayer = std::make_shared<PlayerNetwork>(0);
-	Camera = std::make_shared<MainCamera>();
-	BasePlayer->InitializePlayerList();
+	EnvironmentInstance = std::make_shared<Environment>();
+
 }
 
 std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(1000, [] {
-	BasePlayer->CachePlayers();
+	EnvironmentInstance->GetEntityList();
 
 	});
 
@@ -104,17 +100,18 @@ std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(1000, [] 
 void RenderFrame()
 {
 
-//	if (BasePlayer == nullptr)
-//	{
-//		InitialiseClasses();
-//		Sleep(1000);
-//	}
-//	if (BasePlayer->PlayerList.size() == 0)
-//	{
-//		InitialiseClasses();
-//		Cache->Execute();
-//		Sleep(1000);
-//	}
+	if (EnvironmentInstance == nullptr)
+	{
+		InitialiseClasses();
+		Sleep(1000);
+	}
+	if (EnvironmentInstance->GetObjectCount() == 0)
+	{
+		InitialiseClasses();
+		EnvironmentInstance->GetEntityList();
+		EnvironmentInstance->CacheEntities();
+		Sleep(1000);
+	}
 //	UpdateViewMatrix->Execute();
 	//Cache->Execute();
 //	UpdatePlayers->Execute();

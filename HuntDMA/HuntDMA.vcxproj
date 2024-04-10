@@ -174,9 +174,9 @@
     <ClCompile Include="Misc\Input.cpp" />
     <ClCompile Include="Misc\Pch\Pch.cpp" />
     <ClCompile Include="Misc\Vector.cpp" />
-    <ClCompile Include="SDK\MainCamera.cpp" />
-    <ClCompile Include="SDK\PlayerNetwork.cpp" />
-    <ClCompile Include="SDK\PlayerNetworkState.cpp" />
+    <ClCompile Include="SDK\Camera.cpp" />
+    <ClCompile Include="SDK\WorldEntity.cpp" />
+    <ClCompile Include="SDK\Environment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config\ConfigInstance.h" />
@@ -210,9 +210,9 @@
     <ClInclude Include="Misc\Input.h" />
     <ClInclude Include="Misc\Pch\Pch.h" />
     <ClInclude Include="Misc\Vector.h" />
-    <ClInclude Include="SDK\MainCamera.h" />
-    <ClInclude Include="SDK\PlayerNetwork.h" />
-    <ClInclude Include="SDK\PlayerNetworkState.h" />
+    <ClInclude Include="SDK\Camera.h" />
+    <ClInclude Include="SDK\WorldEntity.h" />
+    <ClInclude Include="SDK\Environment.h" />
     <ClInclude Include="Security\XorStr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
