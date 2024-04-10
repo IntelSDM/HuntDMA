@@ -1,6 +1,7 @@
 #include "Pch.h"
 #include "Environment.h"
 #include "WorldEntity.h"
+#include "Globals.h"
 Environment::Environment()
 {
 	SystemGlobalEnvironment = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + SystemGlobalEnvironment);
@@ -97,6 +98,8 @@ void Environment::CacheEntities()
 		printf(LIT("Entity ClassName: %s\n"), ent->GetEntityName().name);
 		printf(LIT("Entity Class: %s\n"), ent->GetEntityClassName().name);
 		printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
+		Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
+		printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
 
 	}
 }

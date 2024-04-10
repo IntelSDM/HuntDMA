@@ -11,7 +11,7 @@ ID2D1SolidColorBrush* Brush;
 
 
 std::shared_ptr<Environment> EnvironmentInstance;
-
+std::shared_ptr<Camera> CameraInstance;
 void InitD2D(HWND hWnd)
 {
 	HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &Factory);
@@ -88,12 +88,27 @@ int FrameRate()
 void InitialiseClasses()
 {
 	EnvironmentInstance = std::make_shared<Environment>();
+	CameraInstance = std::make_shared<Camera>();
 
 }
 
-std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(1000, [] {
+std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(10000, [] {
+	if (EnvironmentInstance == nullptr)
+		return;
+	if (EnvironmentInstance->GetObjectCount() == 0)
+		return;
 	EnvironmentInstance->GetEntityList();
+	EnvironmentInstance->CacheEntities();
+	});
 
+std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, [] {
+	if (EnvironmentInstance == nullptr)
+		return;
+	if (EnvironmentInstance->GetObjectCount() == 0)
+		return;
+	auto handle = TargetProcess.CreateScatterHandle();
+	CameraInstance->UpdateCamera(handle);
+	TargetProcess.ExecuteReadScatter(handle);
 	});
 
 
@@ -109,11 +124,15 @@ void RenderFrame()
 	{
 		InitialiseClasses();
 		EnvironmentInstance->GetEntityList();
+		auto handle = TargetProcess.CreateScatterHandle();
+		CameraInstance->UpdateCamera(handle);
+		TargetProcess.ExecuteReadScatter(handle);
 		EnvironmentInstance->CacheEntities();
 		Sleep(1000);
 	}
-//	UpdateViewMatrix->Execute();
-	//Cache->Execute();
+
+	Cache->Execute();
+	UpdateCam->Execute();
 //	UpdatePlayers->Execute();
 	RenderTarget->BeginDraw();
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
