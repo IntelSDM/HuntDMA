@@ -7,6 +7,8 @@
 #include "OtherEsp.h"
 #include "ConfigUtilities.h"
 #include "Aimbot.h"
+#include "InputManager.h"
+#include "Kmbox.h"
 ID2D1Factory* Factory;
 IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
@@ -96,9 +98,15 @@ std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, []
 	});
 void DrawCrosshair()
 {
+	Vector2 centre = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
+	// drawing aimbot fov here because fuck it
+	if (Configs.Aimbot.DrawFOV)
+	{
+		OutlineCircle(centre.x, centre.y, Configs.Aimbot.FOV, 2,Configs.Aimbot.FOVColour);
+	}
 	if (Configs.Overlay.CrosshairType == 0)
 		return;
-	Vector2 centre = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width/2 : GetSystemMetrics(SM_CXSCREEN)/2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height/2 : GetSystemMetrics(SM_CYSCREEN) /2);
+	
 	if (Configs.Overlay.CrosshairType == 1)
 	{
 		FilledCircle(centre.x, centre.y, Configs.Overlay.CrosshairSize, Configs.Overlay.CrosshairColour);
@@ -149,6 +157,8 @@ void InitD2D(HWND hWnd)
 	RenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0, 0), &Brush); // create global brush
 	RenderTarget->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE); // set aa mode
 	std::thread(CacheThread).detach();
+	Keyboard::InitKeyboard();
+	kmbox::KmboxInitialize("");
 }
 
 void RenderFrame()
@@ -174,11 +184,7 @@ void RenderFrame()
 	UpdateCam->Execute();
 	UpdatePlayers->Execute();
 	UpdateZombies->Execute();
-	GetAimbotTarget();
-//	AimbotTarget->GetEntityClassName();
-	if(AimbotTarget != nullptr)
-	printf(LIT("Aimbot Target: %s\n"), AimbotTarget->GetEntityClassName());
-
+	Aimbot();
 	RenderTarget->BeginDraw();
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform

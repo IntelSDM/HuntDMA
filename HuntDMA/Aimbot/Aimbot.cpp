@@ -7,7 +7,8 @@
 #include "ConfigInstance.h"
 #include <WorldEntity.h>
 #include "ConfigUtilities.h"
-
+#include "Kmbox.h"
+#include "InputManager.h"
 
 int ConditionalSwapPlayer(std::vector<std::shared_ptr<WorldEntity>>& entities, int low, int high)
 {
@@ -63,7 +64,7 @@ void QuickSortPlayers(std::vector<std::shared_ptr<WorldEntity>>& entities, int l
 std::shared_ptr<WorldEntity> AimbotTarget;
 bool StickTarget()
 {
-	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height / 2 : GetSystemMetrics(SM_CYSCREEN) / 2);
+	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
 	if (CameraInstance == nullptr)
 		return false;
 	if (EnvironmentInstance == nullptr)
@@ -95,7 +96,7 @@ void GetAimbotTarget()
 		return;
 	if(StickTarget())
 		return;
-	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height / 2 : GetSystemMetrics(SM_CYSCREEN) / 2);
+	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
 	std::vector<std::shared_ptr<WorldEntity>> zombielist;
 	std::lock_guard<std::mutex> zombielock(EnvironmentInstance->ZombieListMutex);
 	{
@@ -148,7 +149,7 @@ void GetAimbotTarget()
 			continue;
 		if (player->GetType()  == EntityType::FriendlyPlayer)
 			continue;
-		if (Vector3::Distance(CameraInstance->GetPosition(), player->GetPosition()) <= 2.0f)
+		if (Vector3::Distance(CameraInstance->GetPosition(), player->GetPosition()) <= 2.0f) // local player
 			continue;
 		if (Vector3::Distance(CameraInstance->GetPosition(), player->GetPosition()) > Configs.Aimbot.MaxDistance)
 			continue;
@@ -160,4 +161,57 @@ void GetAimbotTarget()
 		//	printf("Targeting: %s\n", AimbotTarget->GetName().c_str());
 		return;
 	}
+	AimbotTarget = nullptr;
+}
+bool AimKeyDown = false;
+std::shared_ptr<CheatFunction> UpdateAimKey = std::make_shared<CheatFunction>(50, [] {
+	if (EnvironmentInstance == nullptr)
+		return;
+	if (EnvironmentInstance->GetObjectCount() == 0)
+		return;
+	if (Keyboard::IsKeyDown(Configs.Aimbot.Aimkey))
+	{
+		AimKeyDown = true;
+	}
+	else
+	{
+		AimKeyDown = false;
+	}
+	});
+std::chrono::system_clock::time_point KmboxStart;
+void Aimbot()
+{  
+	UpdateAimKey->Execute();
+	if (!kmbox::connected || !AimKeyDown)
+	{
+		AimbotTarget = nullptr;
+		return;
+	}
+		GetAimbotTarget();
+		if (AimbotTarget == nullptr)
+			return;
+		
+		if (AimbotTarget->GetPosition() == Vector3::Zero())
+		{
+			AimbotTarget = nullptr;
+			return;
+		}
+		Vector2 screenpos = CameraInstance->WorldToScreen(AimbotTarget->GetPosition());
+		Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
+		if (Vector2::Distance(screenpos, centreofscreen) > Configs.Aimbot.FOV)
+			return;
+		if (screenpos == Vector2::Zero())
+		{
+			AimbotTarget = nullptr;
+			return;
+		}
+		
+		float x = screenpos.x - centreofscreen.x;
+		
+		if (KmboxStart + std::chrono::milliseconds(75) < std::chrono::system_clock::now())
+		{
+			kmbox::move(x,0);
+			KmboxStart = std::chrono::system_clock::now();
+		}
+	
 }

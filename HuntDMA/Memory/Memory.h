@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include "InputManager.h"
 class Memory
 {
 private:
@@ -45,7 +45,6 @@ private:
 	this->key_ptr = std::make_shared<c_keys>(*this);*/
 
 public:
-
 	static inline CurrentProcessInformation current_process{ };
 
 	/**
