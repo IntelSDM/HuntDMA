@@ -11,7 +11,6 @@ public:
     }
     bool Enable = true;
     int MaxDistance = 250;
-    bool TargetZombies = true;
     bool TargetPlayers = true;
     int Priority = 0;
     int FOV = 200;
@@ -42,7 +41,6 @@ public:
         json j;
         j[ConfigName][LIT("Enable")] = Enable;
         j[ConfigName][LIT("MaxDistance")] = MaxDistance;
-        j[ConfigName][LIT("TargetZombies")] = TargetZombies;
         j[ConfigName][LIT("TargetPlayers")] = TargetPlayers;
         j[ConfigName][LIT("Priority")] = Priority;
         j[ConfigName][LIT("FOV")] = FOV;
@@ -62,8 +60,6 @@ public:
             Enable = j[ConfigName][LIT("Enable")];
         if (j[ConfigName].contains(LIT("MaxDistance")))
             MaxDistance = j[ConfigName][LIT("MaxDistance")];
-        if (j[ConfigName].contains(LIT("TargetZombies")))
-            TargetZombies = j[ConfigName][LIT("TargetZombies")];
         if (j[ConfigName].contains(LIT("TargetPlayers")))
             TargetPlayers = j[ConfigName][LIT("TargetPlayers")];
         if (j[ConfigName].contains(LIT("Priority")))

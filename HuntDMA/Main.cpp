@@ -94,6 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(hWnd, nCmdShow);
 	SetUpConfig();
+	LoadConfig(L"Default.json");
 	InitD2D(hWnd);
 	CreateGUI();
 	MSG msg;

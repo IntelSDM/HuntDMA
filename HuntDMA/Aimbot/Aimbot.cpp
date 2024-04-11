@@ -79,8 +79,6 @@ bool StickTarget()
 		return false;
 	if (AimbotTarget->GetType() == EntityType::EnemyPlayer && !Configs.Aimbot.TargetPlayers)
 		return false;
-	if ((AimbotTarget->GetType() != EntityType::EnemyPlayer && AimbotTarget->GetType() != EntityType::FriendlyPlayer) && !Configs.Aimbot.TargetZombies)
-		return false;
 	if (Vector2::Distance(CameraInstance->WorldToScreen(AimbotTarget->GetPosition()), centreofscreen) > Configs.Aimbot.FOV)
 		return false;
 	return true;
@@ -97,34 +95,6 @@ void GetAimbotTarget()
 	if(StickTarget())
 		return;
 	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
-	std::vector<std::shared_ptr<WorldEntity>> zombielist;
-	std::lock_guard<std::mutex> zombielock(EnvironmentInstance->ZombieListMutex);
-	{
-		zombielist = EnvironmentInstance->GetZombieList();
-	}
-	AimbotTarget = nullptr;
-	if (zombielist.size() != 0)
-	{
-		QuickSortPlayers(zombielist, 0, zombielist.size() - 1);
-		for (std::shared_ptr<WorldEntity> zombie : zombielist)
-		{
-			if (!Configs.Aimbot.TargetZombies)
-				continue;
-			if (zombie == nullptr)
-				continue;
-			if (!zombie->GetValid())
-				continue;
-			if (zombie->GetPosition() == Vector3::Zero())
-				continue;
-			if (CameraInstance -> WorldToScreen(zombie->GetPosition()) == Vector2::Zero())
-				continue;
-			if (Vector2::Distance(CameraInstance->WorldToScreen(zombie->GetPosition()), centreofscreen) > Configs.Aimbot.FOV)
-				continue;
-			if (Vector3::Distance(zombie->GetPosition(), CameraInstance->GetPosition()) > Configs.Aimbot.MaxDistance)
-				continue;
-			AimbotTarget = zombie;
-		}
-	}
 
 	std::vector<std::shared_ptr<WorldEntity>> templist;
 	Vector3 localpos = CameraInstance->GetPosition();
@@ -208,7 +178,7 @@ void Aimbot()
 		
 		float x = screenpos.x - centreofscreen.x;
 		
-		if (KmboxStart + std::chrono::milliseconds(75) < std::chrono::system_clock::now())
+		if (KmboxStart + std::chrono::milliseconds(55) < std::chrono::system_clock::now())
 		{
 			kmbox::move(x,0);
 			KmboxStart = std::chrono::system_clock::now();

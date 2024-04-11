@@ -157,6 +157,10 @@ void Environment::CacheEntities()
 	{
 		if (ent == nullptr)
 			continue;
+		if (((std::string)ent->GetEntityName().name) == "Hunter_Loot")
+		{
+			continue;
+		}
 		if (strstr(ent->GetEntityClassName().name, "HunterBasic") != NULL)
 		{
 			// print ent->GetRenderNode().rnd_flags

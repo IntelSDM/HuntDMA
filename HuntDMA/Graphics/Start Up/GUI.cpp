@@ -160,8 +160,6 @@ void CreateGUI()
 			aimbottab->Push(enable);
 			auto targetplayers = std::make_shared<Toggle>(100, 25, LIT(L"Target Players"), &Configs.Aimbot.TargetPlayers);
 			aimbottab->Push(targetplayers);
-			auto targetzombies = std::make_shared<Toggle>(100, 45, LIT(L"Target Zombies"), &Configs.Aimbot.TargetZombies);
-			aimbottab->Push(targetzombies);
 			auto drawfov = std::make_shared<Toggle>(100, 65, LIT(L"Draw FOV"), &Configs.Aimbot.DrawFOV);
 			aimbottab->Push(drawfov);
 			auto colourpicker = std::make_shared<ColourPicker>(180, 66, &Configs.Aimbot.FOVColour);
