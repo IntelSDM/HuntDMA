@@ -1,24 +1,22 @@
 #pragma once
 #include "pch.h"
-class PlayerConfig
+class ZombieConfig
 {
-	std::string ConfigName;
+    std::string ConfigName;
 
 public:
-	PlayerConfig(const std::string& name)
-	{
-		ConfigName = name;
-	}
+    ZombieConfig(const std::string& name)
+    {
+        ConfigName = name;
+    }
     bool Enable = true;
     bool Name = true;
-	bool Distance = true;
-	int MaxDistance = 1000;
-	D2D1::ColorF TextColour = Colour(255, 255, 255);
-	int FontSize = 12;
+    bool Distance = true;
+    int MaxDistance = 1000;
+    D2D1::ColorF TextColour = Colour(255, 150, 0);
+    int FontSize = 11;
     bool Chams = true;
     int ChamMode = 0;
-    bool DrawFriends = true;
-    D2D1::ColorF FriendColour = Colour(0, 255, 0);
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {
         (*j)[ConfigName][name][LIT("r")] = colour->r;
@@ -48,9 +46,7 @@ public:
         j[ConfigName][LIT("FontSize")] = FontSize;
         j[ConfigName][LIT("Chams")] = Chams;
         j[ConfigName][LIT("ChamMode")] = ChamMode;
-        j[ConfigName][LIT("DrawFriends")] = DrawFriends;
         ToJsonColour(&j, LIT("TextColour"), &TextColour);
-        ToJsonColour(&j, LIT("FriendColour"), &FriendColour);
 
         return j;
     }
@@ -72,9 +68,6 @@ public:
             Chams = j[ConfigName][LIT("Chams")];
         if (j[ConfigName].contains(LIT("ChamMode")))
             ChamMode = j[ConfigName][LIT("ChamMode")];
-        if (j[ConfigName].contains(LIT("DrawFriends")))
-            DrawFriends = j[ConfigName][LIT("DrawFriends")];
-        FromJsonColour(j, LIT("FriendColour"), &FriendColour);
         FromJsonColour(j, LIT("TextColour"), &TextColour);
     }
 };

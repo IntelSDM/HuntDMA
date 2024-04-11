@@ -184,6 +184,9 @@
     <ClInclude Include="Config\ConfigInstance.h" />
     <ClInclude Include="Config\ConfigUtilities.h" />
     <ClInclude Include="Config\PlayerConfig.h" />
+    <ClInclude Include="Config\SupplyConfig.h" />
+    <ClInclude Include="Config\TrapConfig.h" />
+    <ClInclude Include="Config\ZombieConfig.h" />
     <ClInclude Include="Esp\OtherEsp.h" />
     <ClInclude Include="Esp\PlayerEsp.h" />
     <ClInclude Include="Globals.h" />

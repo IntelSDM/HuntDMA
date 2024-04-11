@@ -5,6 +5,7 @@
 #include "Drawing.h"
 #include "ConfigInstance.h"
 #include <WorldEntity.h>
+#include "ConfigUtilities.h"
 
 
 void DrawOtherEsp()
@@ -17,15 +18,40 @@ void DrawOtherEsp()
 	{
 		if (ent == nullptr)
 			continue;
-		if (Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition()) <= 1)
-			continue; // local player, ignore
-		if (!ent->GetValid())
-			continue;
-		Vector2 pos = CameraInstance->WorldToScreen(ent->GetPosition());
-		if (pos.x == 0 || pos.y == 0)
-			continue;
-		std::wstring distance = L"[" + std::to_wstring((int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition())) + L"m]";
-		DrawText(pos.x, pos.y, ent->GetName() + distance, "Verdana", 12, Colour(0, 255, 0, 255), Centre);
+
+		if (ent->GetType() == EntityType::BearTrap || ent->GetType() == EntityType::PoisonTrap)
+		{
+			int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
+			if (distance <= 0)
+				continue;
+			if (distance > Configs.Trap.MaxDistance)
+				continue;
+			if (!ent->GetValid())
+				continue;
+			Vector2 pos = CameraInstance->WorldToScreen(ent->GetPosition());
+			if (pos.x == 0 || pos.y == 0)
+				continue;
+			std::wstring wname = Configs.Trap.Name ? ent->GetName() : L"";
+			std::wstring wdistance = Configs.Trap.Distance ? L"[" + std::to_wstring(distance) + L"m]" : L"";
+			DrawText(pos.x, pos.y, wname + wdistance, "Verdana", Configs.Trap.FontSize, Configs.Trap.TextColour, Centre);
+		}
+		else
+		{
+			int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
+			if (distance <= 0)
+				continue;
+			if (distance > Configs.Supply.MaxDistance)
+				continue;
+			if (!ent->GetValid())
+				continue;
+			Vector2 pos = CameraInstance->WorldToScreen(ent->GetPosition());
+			if (pos.x == 0 || pos.y == 0)
+				continue;
+			std::wstring wname = Configs.Supply.Name ? ent->GetName() : L"";
+			std::wstring wdistance = Configs.Supply.Distance ? L"[" + std::to_wstring(distance) + L"m]" : L"";
+			DrawText(pos.x, pos.y, wname + wdistance, "Verdana", Configs.Supply.FontSize, Configs.Supply.TextColour, Centre);
+		}
+		
 
 
 	}
