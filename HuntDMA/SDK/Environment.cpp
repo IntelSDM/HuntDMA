@@ -77,7 +77,7 @@ void Environment::UpdateZombieList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-	//	ent->WriteNode(writehandle, 0x0000FFFF);
+		ent->WriteNode(writehandle, Configs.Zombie.ChamMode);
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -133,27 +133,22 @@ void Environment::CacheEntities()
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
+
+	
 	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
 			continue;
 		ent->SetUp2(handle);
-		
+
 
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
-	handle = TargetProcess.CreateScatterHandle();
-	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
-	{
-		if (ent == nullptr)
-			continue;
-		ent->SetUp3(handle);
 
-	}
-	TargetProcess.ExecuteReadScatter(handle);
-	TargetProcess.CloseScatterHandle(handle);
+	// doing this after we have read class names fully to avoid reading things we don't need
+
 	std::vector<std::shared_ptr<WorldEntity>> templayerlist;
 	std::vector<std::shared_ptr<WorldEntity>> tempzombielist;
 	std::vector<std::shared_ptr<WorldEntity>> tempstaticlist;
@@ -164,12 +159,9 @@ void Environment::CacheEntities()
 		if (strstr(ent->GetEntityClassName().name, "HunterBasic") != NULL)
 		{
 			// print ent->GetRenderNode().rnd_flags
-			
+
 			ent->SetType(EntityType::EnemyPlayer);
-			if (ent->GetRenderNode().silhouettes_param == 0x00FFFFFF)
-			{
-				ent->SetType(EntityType::FriendlyPlayer);
-			}
+
 			templayerlist.push_back(ent);
 			//printf(LIT("Entity Flags: %d\n"), ent->GetRenderNode().rnd_flags);
 			continue;
@@ -210,7 +202,7 @@ void Environment::CacheEntities()
 			tempzombielist.push_back(ent);
 			continue;
 		}
-		if (((std::string)ent->GetEntityClassName().name )== "special_meathead")
+		if (((std::string)ent->GetEntityClassName().name) == "special_meathead")
 		{
 			ent->SetType(EntityType::MeatHead);
 			tempzombielist.push_back(ent);
@@ -240,14 +232,55 @@ void Environment::CacheEntities()
 			tempstaticlist.push_back(ent);
 			continue;
 		}
-	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-	//	printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
-	//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
-	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
-	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
-	//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
+		//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
+		//	printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
+		//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
+		//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
+		//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
+		//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
 
 	}
+
+
+	handle = TargetProcess.CreateScatterHandle();
+	for (std::shared_ptr<WorldEntity> ent : templayerlist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+
+
+	}
+	for (std::shared_ptr<WorldEntity> ent : tempzombielist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+
+
+	}
+	for (std::shared_ptr<WorldEntity> ent : tempstaticlist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+
+	}
+	TargetProcess.ExecuteReadScatter(handle);
+	TargetProcess.CloseScatterHandle(handle);
+
+	for (std::shared_ptr<WorldEntity> ent : templayerlist) // got to do this after set up 3
+	{
+		if (ent->GetRenderNode().silhouettes_param == 0x00FFFFFF)
+		{
+			ent->SetType(EntityType::FriendlyPlayer);
+		}
+
+
+	}
+
+	
+	
 	PlayerListMutex.lock();
 	PlayerList = templayerlist;
 	PlayerListMutex.unlock();

@@ -144,7 +144,6 @@ void RenderFrame()
 		Sleep(1000);
 	}
 
-	Cache->Execute();
 	UpdateCam->Execute();
 	UpdatePlayers->Execute();
 	UpdateZombies->Execute();

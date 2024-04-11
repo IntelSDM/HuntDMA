@@ -5,7 +5,7 @@ WorldEntity::WorldEntity( uint64_t entity)
 {
 	this->Class = entity;
 	this->ClassAddress = entity;
-
+	
 }
 void WorldEntity::SetUp(VMMDLL_SCATTER_HANDLE handle)
 {
