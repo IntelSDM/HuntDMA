@@ -15,7 +15,7 @@ public:
     bool TargetPlayers = true;
     int Priority = 0;
     int FOV = 200;
-    int Aimkey = 4;
+    int Aimkey = 5;
     bool DrawFOV = true;
     D2D1::ColorF FOVColour = D2D1::ColorF::White;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
@@ -36,7 +36,7 @@ public:
             colour->a = j[ConfigName][name][LIT("a")];
         }
     }
-
+    
     json ToJson()
     {
         json j;

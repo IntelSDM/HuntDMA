@@ -14,7 +14,7 @@ int ConditionalSwapPlayer(std::vector<std::shared_ptr<WorldEntity>>& entities, i
 {
 	std::shared_ptr<WorldEntity> pivot = entities[high];
 	int i = low - 1;
-	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height / 2 : GetSystemMetrics(SM_CYSCREEN) / 2);
+	Vector2 centreofscreen = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height *0.6f : GetSystemMetrics(SM_CYSCREEN) *0.6f);
 	for (int j = low; j < high; ++j)
 	{
 		if (Configs.Aimbot.Priority == 2)

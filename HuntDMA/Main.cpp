@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Init.h"
 #include "GUI.h"
-
+#include "ConfigUtilities.h"
 
 
 void main()
@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 255, LWA_ALPHA);
 
 	ShowWindow(hWnd, nCmdShow);
-
+	SetUpConfig();
 	InitD2D(hWnd);
 	CreateGUI();
 	MSG msg;
