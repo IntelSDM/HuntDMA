@@ -12,7 +12,7 @@ protected:
     float CutOffBuffer = 0;
     float SizeDifference;
 
-    int MaxVisibleItems = 5;
+    int MaxVisibleItems = 15;
 
     int PointerStart = 0;
     int PointerEnd = MaxVisibleItems;

@@ -69,7 +69,7 @@ public:
 	RenderNode GetRenderNode() { return Node; }
 	void SetType(EntityType type) { Type = type; }
 	EntityType GetType() { return Type; }
-	void WriteNode(VMMDLL_SCATTER_HANDLE handle, uint32_t colour);
+	void WriteNode(VMMDLL_SCATTER_HANDLE handle, int colour);
 	void UpdatePosition(VMMDLL_SCATTER_HANDLE handle);
 	void UpdateNode(VMMDLL_SCATTER_HANDLE handle);
 	void UpdateClass(VMMDLL_SCATTER_HANDLE handle);

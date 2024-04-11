@@ -10,7 +10,7 @@ std::map<std::string, MyColour> MenuColours =
     {"HeaderSeperator", MyColour(0, 150, 255, 255)},
     {"Text", MyColour(240, 240, 240, 255)},
     {"TextSelected", MyColour(0, 150, 255, 255)},
-      {"TextHover", MyColour(0, 255, 0, 255)},
+      {"TextHover", MyColour(0, 150, 255, 255)},
 
     {"Button", MyColour(80, 80, 80, 255)},
     {"ButtonHover", MyColour(100, 100, 100, 255)},
@@ -26,10 +26,10 @@ std::map<std::string, MyColour> MenuColours =
 
     {"DropDown", MyColour(80, 80, 80, 255)},
     {"DropDownOutline", MyColour(130, 130, 130, 255)},
-    {"DropDownSelectedText", MyColour(0, 255, 150, 255)},
-    {"DropDownArrow", MyColour(0, 255, 150, 255)},
+    {"DropDownSelectedText", MyColour(0, 150, 255, 255)},
+    {"DropDownArrow", MyColour(0, 150, 255, 255)},
     {"DropDownActiveArrow", MyColour(150, 150, 150, 120)},
-    {"DropDownSlider", MyColour(0, 255, 150, 255)},
+    {"DropDownSlider", MyColour(0, 150, 255, 255)},
 
     {"Keybind", MyColour(80, 80, 80, 255)},
     {"KeybindHover", MyColour(120, 120, 120, 255)},

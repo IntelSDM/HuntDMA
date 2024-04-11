@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Config\ConfigUtilities.cpp" />
     <ClCompile Include="Esp\PlayerEsp.cpp" />
     <ClCompile Include="Graphics\Drawing.cpp" />
     <ClCompile Include="Graphics\Entities\Button.cpp" />
@@ -180,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config\ConfigInstance.h" />
+    <ClInclude Include="Config\ConfigUtilities.h" />
     <ClInclude Include="Config\PlayerConfig.h" />
     <ClInclude Include="Esp\PlayerEsp.h" />
     <ClInclude Include="Globals.h" />

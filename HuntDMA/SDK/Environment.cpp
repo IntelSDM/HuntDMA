@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "WorldEntity.h"
 #include "Globals.h"
+#include "ConfigUtilities.h"
 Environment::Environment()
 {
 	SystemGlobalEnvironment = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + SystemGlobalEnvironment);
@@ -41,7 +42,7 @@ void Environment::UpdatePlayerList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-		ent->WriteNode(writehandle, 0xFF0000FF);
+		ent->WriteNode(writehandle, Configs.Player.ChamMode);
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -65,7 +66,7 @@ void Environment::UpdateZombieList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-		ent->WriteNode(writehandle, 0x0000FFFF);
+	//	ent->WriteNode(writehandle, 0x0000FFFF);
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -87,7 +88,8 @@ void Environment::CacheEntities()
 	{
 		uint64_t entity = entitylist[i];
 		
-		if (entity == NULL) {
+		if (entity == NULL) 
+		{
 			continue;
 		}
 		entitypointerlist.push_back(std::make_shared<WorldEntity>(entity));
@@ -100,6 +102,7 @@ void Environment::CacheEntities()
 		if (ent == nullptr)
 			continue;
 		ent->SetUp(handle);
+	
 
 	}
 	TargetProcess.ExecuteReadScatter(handle);
@@ -109,7 +112,6 @@ void Environment::CacheEntities()
 		if (ent == nullptr)
 			continue;
 		ent->SetUp1(handle);
-
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 
@@ -191,7 +193,7 @@ void Environment::CacheEntities()
 
 	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
 	//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
-		//printf(LIT("Entity Class: %s\n"), ent->GetEntityClassName().name);
+	//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
 	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
 	//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
