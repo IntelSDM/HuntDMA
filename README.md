@@ -22,6 +22,10 @@ Fully Featured Hunt DMA Cheat With KMbox Aimbot, Chams, Fuser ESP
 
 ## Instructions
 * [Installation Guide](./Instructions.md)
+<br>
+
+To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https://github.com/IntelSDM/HuntDMA/blob/67f7d5836460807b2686d123deeada08e5c76618/HuntDMA/SDK/Environment.h#L6
+[This will likely be on Unknowncheats a day after any updates](https://www.unknowncheats.me/forum/other-fps-games/350352-hunt-showdown.html). Just go to the last page and someone will have posted it after an update.
 
 ## Features
 * Aimbot
