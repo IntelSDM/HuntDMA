@@ -41,6 +41,7 @@ void Environment::UpdatePlayerList()
 			ent->SetValid(false); // check if the player is still alive/ active
 			continue;
 		}
+		if (Configs.Player.Chams)
 		ent->WriteNode(writehandle, Configs.Player.ChamMode);
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
@@ -77,7 +78,7 @@ void Environment::UpdateZombieList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-		ent->WriteNode(writehandle, Configs.Zombie.ChamMode);
+	
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -159,13 +160,25 @@ void Environment::CacheEntities()
 		if (strstr(ent->GetEntityClassName().name, "HunterBasic") != NULL)
 		{
 			// print ent->GetRenderNode().rnd_flags
-
+		
 			ent->SetType(EntityType::EnemyPlayer);
 
 			templayerlist.push_back(ent);
 			//printf(LIT("Entity Flags: %d\n"), ent->GetRenderNode().rnd_flags);
+			printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 			continue;
 		}
+		if (strstr(ent->GetEntityName().name, "HunterBasic") != NULL)
+		{
+			// print ent->GetRenderNode().rnd_flags
+
+			ent->SetType(EntityType::EnemyPlayer);
+
+			templayerlist.push_back(ent);
+			printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
+			continue;
+		}
+		
 		if (strstr(ent->GetEntityClassName().name, "Immolator") != NULL)
 		{
 			ent->SetType(EntityType::Immolator);
@@ -230,6 +243,12 @@ void Environment::CacheEntities()
 		{
 			ent->SetType(EntityType::PoisonTrap);
 			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityName().name, "Grunts") != NULL)
+		{
+			ent->SetType(EntityType::Zombie);
+			tempzombielist.push_back(ent);
 			continue;
 		}
 		//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);

@@ -15,8 +15,6 @@ public:
     int MaxDistance = 1000;
     D2D1::ColorF TextColour = Colour(255, 255, 0);
     int FontSize = 11;
-    bool Chams = true;
-    int ChamMode = 0;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {
         (*j)[ConfigName][name][LIT("r")] = colour->r;
@@ -44,8 +42,6 @@ public:
         j[ConfigName][LIT("Distance")] = Distance;
         j[ConfigName][LIT("MaxDistance")] = MaxDistance;
         j[ConfigName][LIT("FontSize")] = FontSize;
-        j[ConfigName][LIT("Chams")] = Chams;
-        j[ConfigName][LIT("ChamMode")] = ChamMode;
         ToJsonColour(&j, LIT("TextColour"), &TextColour);
 
         return j;
@@ -64,10 +60,6 @@ public:
             FontSize = j[ConfigName][LIT("FontSize")];
         if (j[ConfigName].contains(LIT("MaxDistance")))
             MaxDistance = j[ConfigName][LIT("MaxDistance")];
-        if (j[ConfigName].contains(LIT("Chams")))
-            Chams = j[ConfigName][LIT("Chams")];
-        if (j[ConfigName].contains(LIT("ChamMode")))
-            ChamMode = j[ConfigName][LIT("ChamMode")];
         FromJsonColour(j, LIT("TextColour"), &TextColour);
     }
 };

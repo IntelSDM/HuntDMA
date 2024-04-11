@@ -77,15 +77,9 @@ void CreateGUI()
 			zombieesp->Push(name);
 			auto distance = std::make_shared<Toggle>(100, 45, LIT(L"Distance"), &Configs.Zombie.Distance);
 			zombieesp->Push(distance);
-			auto chams = std::make_shared<Toggle>(100, 65, LIT(L"Chams"), &Configs.Zombie.Chams);
-			zombieesp->Push(chams);
-			auto chammode = std::make_shared<DropDown>(100, 95, LIT(L"Cham Mode"), &Configs.Zombie.ChamMode,
-				std::vector<std::wstring>{LIT(L"Outline Red"), LIT(L"Outline Blue"), LIT(L"Outline Yellow"), LIT(L"Outline Orange"), LIT(L"Outline Cyan"), LIT(L"Outline White"),
-				LIT(L"Filled Red"), LIT(L"Filled Blue"), LIT(L"Filled Yellow"), LIT(L"Filled Orange"), LIT(L"Filled Cyan"), LIT(L"Filled White")});
-			zombieesp->Push(chammode);
-			auto maxdistance = std::make_shared<Slider<int>>(100, 120, 150, LIT(L"Max Distance"), LIT(L"m"), 0, 1000, &Configs.Zombie.MaxDistance);
+			auto maxdistance = std::make_shared<Slider<int>>(100, 65, 150, LIT(L"Max Distance"), LIT(L"m"), 0, 1000, &Configs.Zombie.MaxDistance);
 			zombieesp->Push(maxdistance);
-			auto textsize = std::make_shared<Slider<int>>(100, 145, 150, LIT(L"Text Size"), LIT(L"px"), 4, 16, &Configs.Zombie.FontSize);
+			auto textsize = std::make_shared<Slider<int>>(100, 90, 150, LIT(L"Text Size"), LIT(L"px"), 4, 16, &Configs.Zombie.FontSize);
 			zombieesp->Push(textsize);
 		}
 		tabcontroller->Push(zombieesp);
@@ -177,7 +171,7 @@ void CreateGUI()
 			auto maxdistance = std::make_shared<Slider<int>>(100, 110, 150, LIT(L"Max Distance"), LIT(L"m"), 0, 1000, &Configs.Aimbot.MaxDistance);
 			aimbottab->Push(maxdistance);
 			auto priority = std::make_shared<DropDown>(100, 150, LIT(L"Priority"), &Configs.Aimbot.Priority,
-								std::vector<std::wstring>{LIT(L"Crosshair"), LIT(L"Distance"), LIT(L"Both")});
+								std::vector<std::wstring>{LIT(L"Distance"), LIT(L"Crosshair"), LIT(L"Both")});
 			aimbottab->Push(priority);
 			auto keybind = std::make_shared<KeyBind>(100, 195, LIT(L"Aim Key"), &Configs.Aimbot.Aimkey);
 			aimbottab->Push(keybind);
