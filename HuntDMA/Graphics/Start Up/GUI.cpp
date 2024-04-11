@@ -25,9 +25,12 @@ EntityVector MenuEntity;
 bool MenuOpen = true;
 D2D1::ColorF ColourPickerClipBoard = Colour(255,255,255);
 D2D1::ColorF ColourPick = Colour(0, 150, 255, 255);
-
+std::wstring ScreenWidth = std::to_wstring(Configs.Overlay.Width);
+std::wstring ScreenHeight = std::to_wstring(Configs.Overlay.Height);
 void CreateGUI()
 {
+	ScreenWidth = std::to_wstring(Configs.Overlay.Width);
+	ScreenHeight = std::to_wstring(Configs.Overlay.Height);
 	MenuEntity = std::make_shared<Container>();
 	auto form = std::make_shared<Form>(200, 300.0f, 450, 250, 2, 30, LIT(L"Hunt DMA"), false);
 	{
@@ -119,6 +122,32 @@ void CreateGUI()
 		tabcontroller->Push(trapesptab);
 		auto overlaytab = std::make_shared<Tab>(LIT(L"Overlay"), 5, 105, &SelectedTab, 0, 20);
 		{
+			auto overrideresolution = std::make_shared<Toggle>(100, 5, LIT(L"Override W2S Resolution"), &Configs.Overlay.OverrideResolution);
+			overlaytab->Push(overrideresolution);
+			auto screenwidth = std::make_shared<TextBox>(100, 35, LIT(L"Screen Width"), &ScreenWidth);
+			screenwidth->SetValueChangedEvent([]()
+				{
+					try
+					{
+						Configs.Overlay.Width = std::stoi(ScreenWidth);
+					}
+					catch (std::exception ex)
+					{
+					}
+				});
+			overlaytab->Push(screenwidth);
+			auto screenheight = std::make_shared<TextBox>(100, 70, LIT(L"Screen Height"), &ScreenHeight);
+			screenheight->SetValueChangedEvent([]()
+				{
+					try
+					{
+						Configs.Overlay.Height = std::stoi(ScreenHeight);
+					}
+					catch (std::exception ex)
+					{
+					}
+				});
+			overlaytab->Push(screenheight);
 
 		}
 		tabcontroller->Push(overlaytab);

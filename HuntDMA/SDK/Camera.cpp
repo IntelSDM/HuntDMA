@@ -1,6 +1,7 @@
 #include "Pch.h"
 #include "Camera.h"
 #include "Globals.h"
+#include "ConfigUtilities.h"
 void Camera::UpdateCamera(VMMDLL_SCATTER_HANDLE handle)
 {
 	TargetProcess.AddScatterReadRequest(handle, EnvironmentInstance->GetpSystem() +  CameraBase + CameraPosOffset,&Position,sizeof(Vector3));
@@ -15,7 +16,7 @@ Vector2 Camera::WorldToScreen(Vector3 pos)
 	Vector3 vAxisX, vAxisY, vAxisZ;
 	Vector2 ScreenLocation;
 	Vector4 transformed, projected;
-	int pViewport[4] = { 0, 0, 2560, 1440 };
+	int pViewport[4] = { 0, 0, Configs.Overlay.OverrideResolution ? Configs.Overlay.Width : GetSystemMetrics(SM_CXSCREEN), Configs.Overlay.OverrideResolution ? Configs.Overlay.Height : GetSystemMetrics(SM_CYSCREEN) };
 
 	transformed.x = (float)(pos.x * RenderMatrix.matrix[0][0]) + (float)(pos.y * RenderMatrix.matrix[1][0]) + (float)(pos.z * RenderMatrix.matrix[2][0]) + RenderMatrix.matrix[3][0];
 	transformed.y = (float)(pos.x * RenderMatrix.matrix[0][1]) + (float)(pos.y * RenderMatrix.matrix[1][1]) + (float)(pos.z * RenderMatrix.matrix[2][1]) + RenderMatrix.matrix[3][1];
