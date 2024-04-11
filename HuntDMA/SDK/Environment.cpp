@@ -179,7 +179,7 @@ void Environment::CacheEntities()
 			ent->SetType(EntityType::EnemyPlayer);
 
 			templayerlist.push_back(ent);
-			printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
+		//	printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
 			continue;
 		}
 		
