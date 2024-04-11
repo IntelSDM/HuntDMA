@@ -24,6 +24,9 @@ public:
 	void UpdateZombieList();
 	void CacheEntities();
 	Environment();
+	std::mutex PlayerListMutex;
+	std::mutex ZombieListMutex;
+	std::mutex StaticListMutex;
 	std::vector<std::shared_ptr<WorldEntity>> GetPlayerList() { return PlayerList; }
 	std::vector<std::shared_ptr<WorldEntity>> GetZombieList() { return ZombieList; }
 	std::vector<std::shared_ptr<WorldEntity>> GetStaticList() { return StaticList; }

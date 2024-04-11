@@ -19,40 +19,58 @@ std::shared_ptr<CheatFunction> UpdateZombies = std::make_shared<CheatFunction>(2
 
 	});
 
+void DrawZombies()
+{
 
+}
 void DrawPlayers()
 {
+
 	if (EnvironmentInstance == nullptr)
 		return;
+	
 	if (EnvironmentInstance->GetObjectCount() == 0)
 		return;
+
 	if (Configs.Zombie.Enable)
 	{
-		for (std::shared_ptr<WorldEntity> ent : EnvironmentInstance->GetZombieList())
+		EnvironmentInstance->ZombieListMutex.lock();
+		std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetZombieList();
+		EnvironmentInstance->ZombieListMutex.unlock();
+		if (templist.size() != 0) 
 		{
+			for (std::shared_ptr<WorldEntity> ent : templist)
+			{
 
-			if (ent == nullptr)
-				continue;
-			int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
-			if (distance <= 0)
-				continue;
-			if (distance > Configs.Zombie.MaxDistance)
-				continue;
-			if (!ent->GetValid())
-				continue;
-			Vector2 pos = CameraInstance->WorldToScreen(ent->GetPosition());
-			if (pos.x == 0 || pos.y == 0)
-				continue;
-			std::wstring wname = Configs.Zombie.Name ? ent->GetName() : L"";
-			std::wstring wdistance = Configs.Zombie.Distance ? L"[" + std::to_wstring(distance) + L"m]" : L"";
-			DrawText(pos.x, pos.y, wname + wdistance, "Verdana", Configs.Zombie.FontSize, Configs.Zombie.TextColour, Centre);
+				if (ent == nullptr)
+					continue;
+				int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
+				if (distance <= 0)
+					continue;
+				if (distance > Configs.Zombie.MaxDistance)
+					continue;
+				if (!ent->GetValid())
+					continue;
+				Vector2 pos = CameraInstance->WorldToScreen(ent->GetPosition());
+				if (pos.x == 0 || pos.y == 0)
+					continue;
+				std::wstring wname = Configs.Zombie.Name ? ent->GetName() : L"";
+				std::wstring wdistance = Configs.Zombie.Distance ? L"[" + std::to_wstring(distance) + L"m]" : L"";
+				DrawText(pos.x, pos.y, wname + wdistance, "Verdana", Configs.Zombie.FontSize, Configs.Zombie.TextColour, Centre);
 
 
+			}
 		}
 	}
+	
 	if (Configs.Player.Enable)
 	{
-		for (std::shared_ptr<WorldEntity> ent : EnvironmentInstance->GetPlayerList())
+		EnvironmentInstance->PlayerListMutex.lock();
+		std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetPlayerList();
+		EnvironmentInstance->PlayerListMutex.unlock();
+		if (templist.size() == 0)
+			return;
+		for (std::shared_ptr<WorldEntity> ent : templist)
 		{
 			if (ent == nullptr)
 				continue;

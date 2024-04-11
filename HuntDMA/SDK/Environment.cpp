@@ -23,11 +23,14 @@ void Environment::GetEntitys()
 
 void Environment::UpdatePlayerList()
 {
-	if (PlayerList.size() == 0)
-	return;
+	EnvironmentInstance->PlayerListMutex.lock();
+	std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetPlayerList();
+	EnvironmentInstance->PlayerListMutex.unlock();
+	if (templist.size() == 0)
+		return;
 	auto handle = TargetProcess.CreateScatterHandle();
 	auto writehandle = TargetProcess.CreateScatterHandle();
-	for (std::shared_ptr<WorldEntity> ent : PlayerList)
+	for (std::shared_ptr<WorldEntity> ent : templist)
 	{
 		if (ent == nullptr)
 			continue;
@@ -47,15 +50,22 @@ void Environment::UpdatePlayerList()
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
 	TargetProcess.CloseScatterHandle(handle);
+
+	EnvironmentInstance->PlayerListMutex.lock();
+	PlayerList = templist;
+	EnvironmentInstance->PlayerListMutex.unlock();
 }
 
 void Environment::UpdateZombieList()
 {
-	if (ZombieList.size() == 0)
+	EnvironmentInstance->ZombieListMutex.lock();
+	std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetZombieList();
+	EnvironmentInstance->ZombieListMutex.unlock();
+	if (templist.size() == 0)
 		return;
 	auto handle = TargetProcess.CreateScatterHandle();
 	auto writehandle = TargetProcess.CreateScatterHandle();
-	for (std::shared_ptr<WorldEntity> ent : ZombieList)
+	for (std::shared_ptr<WorldEntity> ent : templist)
 	{
 		if (ent == nullptr)
 			continue;
@@ -72,6 +82,10 @@ void Environment::UpdateZombieList()
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
 	TargetProcess.CloseScatterHandle(handle);
+
+	EnvironmentInstance->ZombieListMutex.lock();
+	ZombieList = templist;
+	EnvironmentInstance->ZombieListMutex.unlock();
 }
 void Environment::CacheEntities()
 {
@@ -227,14 +241,20 @@ void Environment::CacheEntities()
 			continue;
 		}
 	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-		printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
+	//	printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
 	//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
 	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
 	//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
 
 	}
+	PlayerListMutex.lock();
 	PlayerList = templayerlist;
+	PlayerListMutex.unlock();
+	ZombieListMutex.lock();
 	ZombieList = tempzombielist;
+	ZombieListMutex.unlock();
+	StaticListMutex.lock();
 	StaticList = tempstaticlist;
+	StaticListMutex.unlock();
 }

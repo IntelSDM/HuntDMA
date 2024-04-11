@@ -14,7 +14,12 @@ void DrawOtherEsp()
 		return;
 	if (EnvironmentInstance->GetObjectCount() == 0)
 		return;
-	for (std::shared_ptr<WorldEntity> ent : EnvironmentInstance->GetStaticList())
+	EnvironmentInstance->StaticListMutex.lock();
+	std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetStaticList();
+	EnvironmentInstance->StaticListMutex.unlock();
+	if(templist.size() == 0)
+		return;
+	for (std::shared_ptr<WorldEntity> ent : templist)
 	{
 		if (ent == nullptr)
 			continue;
