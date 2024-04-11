@@ -4,6 +4,7 @@
 #include "GUI.h"
 #include "Globals.h"
 #include "PlayerEsp.h"
+#include "OtherEsp.h"
 ID2D1Factory* Factory;
 IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
@@ -106,6 +107,7 @@ std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, []
 	auto handle = TargetProcess.CreateScatterHandle();
 	CameraInstance->UpdateCamera(handle);
 	TargetProcess.ExecuteReadScatter(handle);
+	TargetProcess.CloseScatterHandle(handle);
 	});
 
 
@@ -124,6 +126,7 @@ void RenderFrame()
 		auto handle = TargetProcess.CreateScatterHandle();
 		CameraInstance->UpdateCamera(handle);
 		TargetProcess.ExecuteReadScatter(handle);
+		TargetProcess.CloseScatterHandle(handle);
 		EnvironmentInstance->CacheEntities();
 		Sleep(1000);
 	}
@@ -136,6 +139,7 @@ void RenderFrame()
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform
 	DrawPlayers();
+	DrawOtherEsp();
 	Render();
 	RenderTarget->EndDraw();
 }

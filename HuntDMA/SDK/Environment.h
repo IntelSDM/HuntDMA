@@ -12,6 +12,7 @@ private:
 	uint64_t EntityListOffset = 0x40078;
 	std::vector<std::shared_ptr<WorldEntity>> PlayerList;
 	std::vector<std::shared_ptr<WorldEntity>> ZombieList;
+	std::vector<std::shared_ptr<WorldEntity>> StaticList;
 public:
 	uint64_t GetSystemGlobalEnvironment() { return SystemGlobalEnvironment; }
 	uint64_t GetEntitySystem() { return EntitySystem; }
@@ -25,4 +26,5 @@ public:
 	Environment();
 	std::vector<std::shared_ptr<WorldEntity>> GetPlayerList() { return PlayerList; }
 	std::vector<std::shared_ptr<WorldEntity>> GetZombieList() { return ZombieList; }
+	std::vector<std::shared_ptr<WorldEntity>> GetStaticList() { return StaticList; }
 };

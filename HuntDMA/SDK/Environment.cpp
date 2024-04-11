@@ -38,14 +38,15 @@ void Environment::UpdatePlayerList()
 			ent->SetValid(false); // check if the player is still alive/ active
 			continue;
 		}
-	
+		ent->WriteNode(writehandle, Configs.Player.ChamMode);
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-		ent->WriteNode(writehandle, Configs.Player.ChamMode);
+		
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
+	TargetProcess.CloseScatterHandle(handle);
 }
 
 void Environment::UpdateZombieList()
@@ -70,6 +71,7 @@ void Environment::UpdateZombieList()
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
+	TargetProcess.CloseScatterHandle(handle);
 }
 void Environment::CacheEntities()
 {
@@ -96,7 +98,8 @@ void Environment::CacheEntities()
 
 	}
 	TargetProcess.ExecuteReadScatter(handle);
-
+	TargetProcess.CloseScatterHandle(handle);
+	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
@@ -106,7 +109,8 @@ void Environment::CacheEntities()
 
 	}
 	TargetProcess.ExecuteReadScatter(handle);
-
+	TargetProcess.CloseScatterHandle(handle);
+	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
@@ -114,7 +118,8 @@ void Environment::CacheEntities()
 		ent->SetUp1(handle);
 	}
 	TargetProcess.ExecuteReadScatter(handle);
-
+	TargetProcess.CloseScatterHandle(handle);
+	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
@@ -124,7 +129,8 @@ void Environment::CacheEntities()
 
 	}
 	TargetProcess.ExecuteReadScatter(handle);
-
+	TargetProcess.CloseScatterHandle(handle);
+	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
@@ -132,20 +138,26 @@ void Environment::CacheEntities()
 		ent->SetUp3(handle);
 
 	}
+	TargetProcess.ExecuteReadScatter(handle);
+	TargetProcess.CloseScatterHandle(handle);
 	std::vector<std::shared_ptr<WorldEntity>> templayerlist;
 	std::vector<std::shared_ptr<WorldEntity>> tempzombielist;
+	std::vector<std::shared_ptr<WorldEntity>> tempstaticlist;
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
 			continue;
 		if (strstr(ent->GetEntityClassName().name, "HunterBasic") != NULL)
 		{
+			// print ent->GetRenderNode().rnd_flags
+			
 			ent->SetType(EntityType::EnemyPlayer);
 			if (ent->GetRenderNode().silhouettes_param == 0x00FFFFFF)
 			{
 				ent->SetType(EntityType::FriendlyPlayer);
 			}
 			templayerlist.push_back(ent);
+			//printf(LIT("Entity Flags: %d\n"), ent->GetRenderNode().rnd_flags);
 			continue;
 		}
 		if (strstr(ent->GetEntityClassName().name, "Immolator") != NULL)
@@ -190,9 +202,32 @@ void Environment::CacheEntities()
 			tempzombielist.push_back(ent);
 			continue;
 		}
-
+		if (((std::string)ent->GetEntityClassName().name) == "AmmoSwapBox")
+		{
+			ent->SetType(EntityType::AmmoBox);
+			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name) == "Supply_Box")
+		{
+			ent->SetType(EntityType::SupplyBox);
+			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name) == "beartrap")
+		{
+			ent->SetType(EntityType::BearTrap);
+			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name) == "poisonbomb")
+		{
+			ent->SetType(EntityType::PoisonTrap);
+			tempstaticlist.push_back(ent);
+			continue;
+		}
 	//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-	//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
+		printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
 	//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 	//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
 	//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
@@ -201,4 +236,5 @@ void Environment::CacheEntities()
 	}
 	PlayerList = templayerlist;
 	ZombieList = tempzombielist;
+	StaticList = tempstaticlist;
 }

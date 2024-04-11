@@ -64,18 +64,16 @@ void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle,int colour)
 	else if (colour == 7)
 		convertedcolour = 0x0000FF00;
 	else if (colour == 8)
-		convertedcolour = 0xFFFFFF00;
-	else if (colour == 9)
 		convertedcolour = 0xFFFF0000;
-	else if (colour == 10)
+	else if (colour == 9)
 		convertedcolour = 0xFFA50000;
-	else if (colour == 11)
+	else if (colour == 10)
 		convertedcolour = 0x00FFFF00;
-	else if (colour == 12)
+	else if (colour == 11)
 		convertedcolour = 0xFFFFFF00;
-
 	if (RenderNodePointer != 0)
 	{
+		if(Node.rnd_flags == 284558360584 || Node.rnd_flags == 9680453640)
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x3c, &convertedcolour, sizeof(uint32_t));
 	}
 }

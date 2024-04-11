@@ -20,6 +20,10 @@ enum class EntityType : int
 	Dog,
 	WaterDevil,
 	MeatHead,
+	SupplyBox,
+	AmmoBox,
+	BearTrap,
+	PoisonTrap,
 };
 
 class WorldEntity
@@ -55,7 +59,11 @@ private:
 		{EntityType::Immolator, L"Immolator"},
 		{EntityType::Spider, L"Spider"},
 		{EntityType::WaterDevil, L"Water Devil"},
-		{EntityType::MeatHead, L"Fat BOI"}
+		{EntityType::MeatHead, L"Fat BOI"},
+		{EntityType::SupplyBox, L"Supply Box"},
+		{EntityType::AmmoBox, L"Ammo Box"},
+		{EntityType::BearTrap, L"Bear Trap"},
+		{EntityType::PoisonTrap, L"Poison Trap"},
 	};
 public:
 	WorldEntity( uint64_t classptr);
