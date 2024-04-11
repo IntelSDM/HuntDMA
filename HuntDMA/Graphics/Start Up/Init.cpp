@@ -6,6 +6,7 @@
 #include "PlayerEsp.h"
 #include "OtherEsp.h"
 #include "ConfigUtilities.h"
+#include "Aimbot.h"
 ID2D1Factory* Factory;
 IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
@@ -173,6 +174,11 @@ void RenderFrame()
 	UpdateCam->Execute();
 	UpdatePlayers->Execute();
 	UpdateZombies->Execute();
+	GetAimbotTarget();
+//	AimbotTarget->GetEntityClassName();
+	if(AimbotTarget != nullptr)
+	printf(LIT("Aimbot Target: %s\n"), AimbotTarget->GetEntityClassName());
+
 	RenderTarget->BeginDraw();
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform

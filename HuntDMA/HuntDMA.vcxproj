@@ -119,7 +119,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Config;$(SolutionDir)$(ProjectName)\Graphics\start up;$(SolutionDir)$(ProjectName)\Esp;$(SolutionDir)$(ProjectName)\Graphics\entities;$(SolutionDir)$(ProjectName)\Graphics\utility;$(SolutionDir)$(ProjectName)\Graphics;$(SolutionDir)$(ProjectName)\Security;$(SolutionDir)$(ProjectName)\SDK;$(SolutionDir)$(ProjectName)\Misc\Pch;$(SolutionDir)$(ProjectName)\Memory;$(SolutionDir)$(ProjectName)\;$(SolutionDir)$(ProjectName)\Misc;$(SolutionDir)$(ProjectName)\Sockets;$(SolutionDir)$(ProjectName)\ESP;$(SolutionDir)$(ProjectName)\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Config;$(SolutionDir)$(ProjectName)\Graphics\start up;$(SolutionDir)$(ProjectName)\Esp;$(SolutionDir)$(ProjectName)\Graphics\entities;$(SolutionDir)$(ProjectName)\Graphics\utility;$(SolutionDir)$(ProjectName)\Graphics;$(SolutionDir)$(ProjectName)\Security;$(SolutionDir)$(ProjectName)\Aimbot;$(SolutionDir)$(ProjectName)\SDK;$(SolutionDir)$(ProjectName)\Misc\Pch;$(SolutionDir)$(ProjectName)\Memory;$(SolutionDir)$(ProjectName)\;$(SolutionDir)$(ProjectName)\Misc;$(SolutionDir)$(ProjectName)\Sockets;$(SolutionDir)$(ProjectName)\ESP;$(SolutionDir)$(ProjectName)\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,7 +137,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Config;$(SolutionDir)$(ProjectName)\Graphics\start up;$(SolutionDir)$(ProjectName)\Esp;$(SolutionDir)$(ProjectName)\Graphics\entities;$(SolutionDir)$(ProjectName)\Graphics\utility;$(SolutionDir)$(ProjectName)\Graphics;$(SolutionDir)$(ProjectName)\Security;$(SolutionDir)$(ProjectName)\SDK;$(SolutionDir)$(ProjectName)\Misc\Pch;$(SolutionDir)$(ProjectName)\Memory;$(SolutionDir)$(ProjectName)\;$(SolutionDir)$(ProjectName)\Misc;$(SolutionDir)$(ProjectName)\Sockets;$(SolutionDir)$(ProjectName)\ESP;$(SolutionDir)$(ProjectName)\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Config;$(SolutionDir)$(ProjectName)\Graphics\start up;$(SolutionDir)$(ProjectName)\Esp;$(SolutionDir)$(ProjectName)\Graphics\entities;$(SolutionDir)$(ProjectName)\Graphics\utility;$(SolutionDir)$(ProjectName)\Graphics;$(SolutionDir)$(ProjectName)\Security;$(SolutionDir)$(ProjectName)\Aimbot;$(SolutionDir)$(ProjectName)\SDK;$(SolutionDir)$(ProjectName)\Misc\Pch;$(SolutionDir)$(ProjectName)\Memory;$(SolutionDir)$(ProjectName)\;$(SolutionDir)$(ProjectName)\Misc;$(SolutionDir)$(ProjectName)\Sockets;$(SolutionDir)$(ProjectName)\ESP;$(SolutionDir)$(ProjectName)\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aimbot\Aimbot.cpp" />
     <ClCompile Include="Config\ConfigUtilities.cpp" />
     <ClCompile Include="Esp\OtherEsp.cpp" />
     <ClCompile Include="Esp\PlayerEsp.cpp" />
@@ -181,6 +182,8 @@
     <ClCompile Include="SDK\Environment.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aimbot\Aimbot.h" />
+    <ClInclude Include="Config\AimbotConfig.h" />
     <ClInclude Include="Config\ConfigInstance.h" />
     <ClInclude Include="Config\ConfigUtilities.h" />
     <ClInclude Include="Config\OverlayConfig.h" />

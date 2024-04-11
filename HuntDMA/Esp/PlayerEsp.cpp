@@ -74,10 +74,10 @@ void DrawPlayers()
 		{
 			if (ent == nullptr)
 				continue;
-			if (Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition()) <= 1)
-				continue; // local player, ignore
 			int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
 			if (distance <= 0)
+				continue;
+			if (Vector3::Distance(CameraInstance->GetPosition(), ent->GetPosition()) <= 2.0f)
 				continue;
 			if (distance > Configs.Player.MaxDistance)
 				continue;

@@ -5,6 +5,7 @@
 #include "SupplyConfig.h"
 #include "TrapConfig.h"
 #include "OverlayConfig.h"
+#include "AimbotConfig.h"
 class ConfigInstances
 {
 public:
@@ -13,6 +14,7 @@ public:
 	SupplyConfig Supply = SupplyConfig(LIT("Supply"));
 	TrapConfig Trap = TrapConfig(LIT("Trap"));
 	OverlayConfig Overlay = OverlayConfig(LIT("Overlay"));
+	AimbotConfig Aimbot = AimbotConfig(LIT("Aimbot"));
 
 
 	json ToJson()
@@ -23,6 +25,7 @@ public:
 		jsoned.merge_patch(Supply.ToJson());
 		jsoned.merge_patch(Trap.ToJson());
 		jsoned.merge_patch(Overlay.ToJson());
+		jsoned.merge_patch(Aimbot.ToJson());
 		return jsoned;
 	}
 
@@ -33,5 +36,6 @@ public:
 		Supply.FromJson(jsoned);
 		Trap.FromJson(jsoned);
 		Overlay.FromJson(jsoned);
+		Aimbot.FromJson(jsoned);
 	}
 };
