@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "PlayerEsp.h"
 #include "OtherEsp.h"
+#include "ConfigUtilities.h"
 ID2D1Factory* Factory;
 IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
@@ -92,7 +93,32 @@ std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, []
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
 	});
+void DrawCrosshair()
+{
+	if (Configs.Overlay.CrosshairType == 0)
+		return;
+	Vector2 centre = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width/2 : GetSystemMetrics(SM_CXSCREEN)/2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height/2 : GetSystemMetrics(SM_CYSCREEN) /2);
+	if (Configs.Overlay.CrosshairType == 1)
+	{
+		FilledCircle(centre.x, centre.y, Configs.Overlay.CrosshairSize, Configs.Overlay.CrosshairColour);
 
+	}
+	if (Configs.Overlay.CrosshairType == 2)
+	{
+		OutlineCircle(centre.x, centre.y, Configs.Overlay.CrosshairSize,2, Configs.Overlay.CrosshairColour);
+
+	}
+	if (Configs.Overlay.CrosshairType == 3)
+	{
+		FilledRectangle(centre.x - (Configs.Overlay.CrosshairSize / 2), centre.y - (Configs.Overlay.CrosshairSize / 2), Configs.Overlay.CrosshairSize, Configs.Overlay.CrosshairSize, Configs.Overlay.CrosshairColour);
+
+	}
+	if (Configs.Overlay.CrosshairType == 4)
+	{
+		OutlineRectangle(centre.x - (Configs.Overlay.CrosshairSize/2), centre.y - (Configs.Overlay.CrosshairSize/2),  Configs.Overlay.CrosshairSize , Configs.Overlay.CrosshairSize, 1, Configs.Overlay.CrosshairColour);
+
+	}
+}
 void CacheThread()
 {
 	while (true)
@@ -152,6 +178,7 @@ void RenderFrame()
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform
 	DrawPlayers();
 	DrawOtherEsp();
+	DrawCrosshair();
 	Render();
 	RenderTarget->EndDraw();
 }

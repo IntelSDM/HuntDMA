@@ -148,7 +148,15 @@ void CreateGUI()
 					}
 				});
 			overlaytab->Push(screenheight);
-
+			auto crosshaircolour = std::make_shared<ColourPicker>(400, 25, &Configs.Overlay.CrosshairColour);
+			overlaytab->Push(crosshaircolour);
+			auto crosshairtype = std::make_shared<DropDown>(270, 20, LIT(L"Crosshair Mode"), &Configs.Overlay.CrosshairType,
+				std::vector<std::wstring>{LIT(L"None"), LIT(L"Filled Circle"), LIT(L"Outline Circle"), LIT(L"Filled Rect"), LIT(L"Outline Rect") });
+			overlaytab->Push(crosshairtype);
+			auto textsize = std::make_shared<Slider<int>>(270, 45, 100, LIT(L"Size"), LIT(L"px"), 1, 20, &Configs.Overlay.CrosshairSize);
+			overlaytab->Push(textsize);
+			
+			
 		}
 		tabcontroller->Push(overlaytab);
 		auto aimbottab = std::make_shared<Tab>(LIT(L"Aimbot"), 5, 130, &SelectedTab, 0, 20);
