@@ -169,7 +169,7 @@ void Environment::CacheEntities()
 
 			templayerlist.push_back(ent);
 			//printf(LIT("Entity Flags: %d\n"), ent->GetRenderNode().rnd_flags);
-			printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
+			//printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 			continue;
 		}
 		if (strstr(ent->GetEntityName().name, "HunterBasic") != NULL)
