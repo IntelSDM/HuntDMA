@@ -75,8 +75,12 @@ void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle,int colour)
 	{
 	//	if(Node.rnd_flags == 284558360584 || Node.rnd_flags == 9680453640)
 		uint64_t allmap = 0x80018;
+		float maxdistance = 5000;
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x28, &allmap, sizeof(uint64_t)); // change render flag to max distance, allows us to use chams at further distances as long as the model isn't culled.
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x3c, &convertedcolour, sizeof(uint32_t));
+		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x48, &maxdistance, sizeof(float));// credit Kiosk 
+		// printf RenderNodePointer
+		//printf("RenderNodePointer: %llx\n", RenderNodePointer);
 	}
 }
 

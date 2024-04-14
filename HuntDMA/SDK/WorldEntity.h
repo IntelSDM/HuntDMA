@@ -5,6 +5,8 @@ struct RenderNode {
 	unsigned __int64 rnd_flags; // 0x28(0x08)
 	char pad_02[0xc]; // 0x30(0xc)
 	unsigned int silhouettes_param; // 0x3c(0x04)
+	char pad_03[0x8];
+	float m_fWSMaxViewDist; //0x48
 };
 struct EntityNameStruct {
 	char name[100];
