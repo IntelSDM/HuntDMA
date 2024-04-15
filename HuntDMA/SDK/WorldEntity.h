@@ -18,6 +18,8 @@ enum class EntityType : int
 	Butcher,
 	Spider,
 	Zombie,
+	CurrencyCollection,
+	CashRegister,
 	Immolator,
 	Dog,
 	WaterDevil,
@@ -26,6 +28,33 @@ enum class EntityType : int
 	AmmoBox,
 	BearTrap,
 	PoisonTrap,
+	RotJaw,
+	Assassin,
+	ExtractionPoint,
+	ScrapBeak,
+	TripMine,
+	Explosive,
+	SpitzerBullets,
+	PoisonBullets,
+	HighVelocityBullets,
+	IncendiaryBullets,
+	DumDumBullets,
+	ExplosiveBullets,
+	FMJBullets,
+	PoisonBolts,
+	ExplosiveBolts,
+	IncendiaryShells,
+	PennyShotShells,
+	FlechetteShells,
+	SlugShells,
+	AmmoCrate,
+	SpecialAmmoCrate,
+	AmmoBox,
+	MediumAmmoPackage,
+	ShotgunAmmoPackage,
+	CompactAmmoPackage,
+	LongAmmoPackage,
+	Medkit,
 };
 
 class WorldEntity
@@ -37,6 +66,7 @@ private:
 	uint64_t StringBufferOffset = 0x10;
 	uint64_t ClassPointerOffset = 0x18;
 	uint64_t SlotsPointerOffset = 0xA8;
+	uint64_t SkeletonPoseOffset = 0xC00;
 	uint64_t SlotOffset = 0x0;
 	uint64_t RenderNodePointerOffset = 0xA8;
 	RenderNode Node;
@@ -47,6 +77,7 @@ private:
 	uint64_t ClassNamePointer = 0x0;
 	uint64_t ClassPointer = 0x0;
 	uint64_t SlotsPointer = 0x0;
+	uint64_t SkeletonPose = 0x0;
 	uint64_t Slot = 0x0;
 	uint64_t RenderNodePointer = 0x0;
 	Vector3 Position;
@@ -66,6 +97,34 @@ private:
 		{EntityType::AmmoBox, L"Ammo Box"},
 		{EntityType::BearTrap, L"Bear Trap"},
 		{EntityType::PoisonTrap, L"Poison Trap"},
+		{EntityType::RotJaw, L"Rot Jaw"},
+		{EntityType::Assassin, L"Assassin"},
+		{EntityType::ScrapBeak, L"ScrapBeak"},
+		{EntityType::TripMine, L"Trip Mine"},
+		{EntityType::Explosive, L"Explosive"},
+		{EntityType::SpitzerBullets, L"Spitzer Bullets"},
+		{EntityType::PoisonBullets, L"Poison Bullets"},
+		{EntityType::HighVelocityBullets, L"High Velocity Bullets"},
+		{EntityType::IncendiaryBullets, L"Incendiary Bullets"},
+		{EntityType::DumDumBullets, L"Dum Dum Bullets"},
+		{EntityType::ExplosiveBullets, L"Explosive Bullets"},
+		{EntityType::FMJBullets, L"FMJ Bullets"},
+		{EntityType::PoisonBolts, L"Poison Bolts"},
+		{EntityType::ExplosiveBolts, L"Explosive Bolts"},
+		{EntityType::IncendiaryShells, L"Incendiary Shells"},
+		{EntityType::PennyShotShells, L"Penny Shot Shells"},
+		{EntityType::FlechetteShells, L"Flechette Shells"},
+		{EntityType::SlugShells, L"Slug Shells"},
+		{EntityType::AmmoCrate, L"Ammo Crate"},
+		{EntityType::SpecialAmmoCrate, L"Special Ammo Crate"},
+		{EntityType::MediumAmmoPackage, L"Medium Ammo Package"},
+		{EntityType::ShotgunAmmoPackage, L"Shotgun Ammo Package"},
+		{EntityType::CompactAmmoPackage, L"Compact Ammo Package"},
+		{EntityType::LongAmmoPackage, L"Long Ammo Package"},
+		{EntityType::Medkit, L"Medkit"},
+
+
+
 	};
 public:
 	WorldEntity( uint64_t classptr);

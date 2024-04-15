@@ -155,6 +155,125 @@ void Environment::CacheEntities()
 	std::vector<std::shared_ptr<WorldEntity>> tempstaticlist;
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
+
+		/*
+		* static std::unordered_map<entity_type_v2, entity_type_match_criteria> entity_type_to_match_criteria_map = {
+		{
+			{
+				entity_type_v2::HUNTER, {
+				.entity_name_substrings = { },
+				.entity_class_name_substrings = { "HunterBasic" }
+			}
+		},
+		{
+					entity_type_v2::ZOMBIE, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "grunt_base", "Immolator", "Waterdevil", "special_meathead", "dog_base" }
+					},
+		},
+		{
+					entity_type_v2::BOSS_ZOMBIE, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "target_assassin", "target_butcher", "target_rotjaw", "special_spider", "target_scrapbeak" }
+					},
+		},
+		{
+					entity_type_v2::CLUE, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "Clue_Base" }
+					},
+		},
+		{
+					entity_type_v2::EXTRACTION, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "ExtractionPoint" }
+					},
+		},
+		{
+					entity_type_v2::WORLD_WEAPON, {
+						.entity_name_substrings = { "lootable_saddle_a_weapon" },
+						.entity_class_name_substrings = { "1rPistol", "1rRevolver", "2rRifle", "2rShotgun" }
+					},
+		},
+		{
+					entity_type_v2::WORLD_CONSUMABLE, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "2tConsumable" }
+					},
+		},
+		{
+					entity_type_v2::WORLD_ITEM, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "2eWorldLight", "2eWorldTrap", "2mWorldBlunt", "2mWorldStab" }
+					},
+		},
+		{
+					entity_type_v2::AMMO_BOX, {
+						.entity_name_substrings = { "ammo_box", "ammo_package" },
+						.entity_class_name_substrings = { }
+					},
+		},
+		{
+					entity_type_v2::AMMO_SWAP, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "AmmoSwapBox" }
+					},
+		},
+		{
+					entity_type_v2::MEDKIT, {
+						.entity_name_substrings = { "health_box" },
+						.entity_class_name_substrings = { }
+					},
+		},
+		{
+					entity_type_v2::TOOLBOX, {
+						.entity_name_substrings = { "item_box", "lootable_saddle_a_bag" },
+						.entity_class_name_substrings = { }
+					},
+		},
+		{
+					entity_type_v2::TRAIT, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "TraitCharm" }
+					},
+		},
+		{
+					entity_type_v2::BARREL, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "BioBarrel", "Explodable_Object" }
+					},
+		},
+		{
+					entity_type_v2::LOOTABLE_MONEY, {
+						.entity_name_substrings = { "currency_collection", "cash_register" },
+						.entity_class_name_substrings = { }
+					},
+		},
+		{
+					entity_type_v2::POSTER, {
+						.entity_name_substrings = { "poster" },
+						.entity_class_name_substrings = { }
+					},
+		},
+		{
+					entity_type_v2::DESTROYABLE_REWARD, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "DestroyableReward" }
+					},
+		},
+		{
+					entity_type_v2::HALLOWEEN_ROTTEN_ALTAR, {
+						.entity_name_substrings = { },
+						.entity_class_name_substrings = { "RottenAltar" }
+					}
+		}
+		}
+	};
+		
+	}
+
+	
+		*/
 		if (ent == nullptr)
 			continue;
 		if (((std::string)ent->GetEntityName().name) == "Hunter_Loot")
@@ -207,6 +326,42 @@ void Environment::CacheEntities()
 			tempzombielist.push_back(ent);
 			continue;
 		}
+		if (strstr(ent->GetEntityClassName().name, "ExtractionPoint") != NULL)
+		{
+			ent->SetType(EntityType::ExtractionPoint);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "cash_register") != NULL)
+		{
+			ent->SetType(EntityType::CashRegister);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "currency_collection") != NULL)
+		{
+			ent->SetType(EntityType::CurrencyCollection);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "target_assassin") != NULL)
+		{
+			ent->SetType(EntityType::Assassin);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "target_rotjaw") != NULL)
+		{
+			ent->SetType(EntityType::RotJaw);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "target_scrapbeak") != NULL)
+		{
+			ent->SetType(EntityType::ScrapBeak);
+			tempzombielist.push_back(ent);
+			continue;
+		}
 		if (strstr(ent->GetEntityClassName().name, "dog_base") != NULL)
 		{
 			ent->SetType(EntityType::Dog);
@@ -228,12 +383,116 @@ void Environment::CacheEntities()
 		if (((std::string)ent->GetEntityClassName().name) == "AmmoSwapBox")
 		{
 			ent->SetType(EntityType::AmmoBox);
+
+				if (strstr(ent->GetEntityName().name, "bullets_spitzer") != NULL)
+				{
+					ent->SetType(EntityType::SpitzerBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_poison") != NULL)
+				{
+					ent->SetType(EntityType::PoisonBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_highvelocity") != NULL)
+				{
+					ent->SetType(EntityType::HighVelocityBullets);
+					
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_incendiary") != NULL)
+				{
+					ent->SetType(EntityType::IncendiaryBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_dumdum") != NULL)
+				{
+					ent->SetType(EntityType::DumDumBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_explosive") != NULL)
+				{
+					ent->SetType(EntityType::ExplosiveBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bullets_fmj") != NULL)
+				{
+					ent->SetType(EntityType::FMJBullets);
+				}
+				else if (strstr(ent->GetEntityName().name, "bolts_arrows_poison") != NULL)
+				{
+					ent->SetType(EntityType::PoisonBolts);
+				}
+				else if (strstr(ent->GetEntityName().name, "bolts_arrows_explosive") != NULL)
+				{
+					ent->SetType(EntityType::ExplosiveBolts);
+				}
+				else if (strstr(ent->GetEntityName().name, "shells_dragonbreath") != NULL)
+				{
+					ent->SetType(EntityType::IncendiaryShells);
+				}
+				else if (strstr(ent->GetEntityName().name, "shells_pennyshot") != NULL)
+				{
+					ent->SetType(EntityType::PennyShotShells);
+				}
+				else if (strstr(ent->GetEntityName().name, "shells_flechette") != NULL)
+				{
+					ent->SetType(EntityType::FlechetteShells);
+				}
+				else if (strstr(ent->GetEntityName().name, "shells_slugs") != NULL)
+				{
+					ent->SetType(EntityType::SlugShells);
+				}
+
+			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name) == "Explodable_Object")
+		{
+			ent->SetType(EntityType::Explosive);
+			tempstaticlist.push_back(ent);
+			continue;
+		}
+		if (((std::string)ent->GetEntityClassName().name) == "BioBarrel")
+		{
+			ent->SetType(EntityType::Explosive);
 			tempstaticlist.push_back(ent);
 			continue;
 		}
 		if (((std::string)ent->GetEntityClassName().name) == "Supply_Box")
 		{
 			ent->SetType(EntityType::SupplyBox);
+			if (strstr(ent->GetEntityName().name, "ammo_crate_normal") != NULL) // only in training mode
+			{
+				ent->SetType(EntityType::AmmoBox);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_crate_special") != NULL) // only in training mode
+			{
+				ent->SetType(EntityType::SpecialAmmoCrate);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_box_special") != NULL)
+			{
+				ent->SetType(EntityType::SpecialAmmoCrate);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_box") != NULL)
+			{
+				ent->SetType(EntityType::AmmoBox);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_package_medium") != NULL)
+			{
+				ent->SetType(EntityType::MediumAmmoPackage);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_package_shotgun") != NULL)
+			{
+				ent->SetType(EntityType::ShotgunAmmoPackage);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_package_compact") != NULL)
+			{
+				ent->SetType(EntityType::CompactAmmoPackage);
+			}
+			else if (strstr(ent->GetEntityName().name, "ammo_package_long") != NULL)
+			{
+				ent->SetType(EntityType::LongAmmoPackage);
+			}
+			else if (strstr(ent->GetEntityName().name, "health") != NULL)
+			{
+				ent->SetType(EntityType::Medkit);
+			}
+
 			tempstaticlist.push_back(ent);
 			continue;
 		}
@@ -243,9 +502,9 @@ void Environment::CacheEntities()
 			tempstaticlist.push_back(ent);
 			continue;
 		}
-		if (((std::string)ent->GetEntityClassName().name) == "poisonbomb")
+		if (((std::string)ent->GetEntityClassName().name).find("TripMine") != std::string::npos && ((std::string)ent->GetEntityClassName().name).find("2") == std::string::npos)
 		{
-			ent->SetType(EntityType::PoisonTrap);
+			ent->SetType(EntityType::TripMine);
 			tempstaticlist.push_back(ent);
 			continue;
 		}

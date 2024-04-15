@@ -22,7 +22,9 @@ void WorldEntity::SetUp1(VMMDLL_SCATTER_HANDLE handle)
 	TargetProcess.AddScatterReadRequest(handle,this->EntityNamePointer, &EntityName, sizeof(EntityNameStruct));
 	TargetProcess.AddScatterReadRequest(handle, this->ClassPointer + StringBufferOffset,&ClassNamePointer, sizeof(uint64_t));
 	if (SlotsPointer != 0)
-	TargetProcess.AddScatterReadRequest(handle, this->SlotsPointer, &Slot, sizeof(uint64_t));
+	{
+		TargetProcess.AddScatterReadRequest(handle, this->SlotsPointer, &Slot, sizeof(uint64_t));
+	}
 	else
 		Slot = 0;
 }
