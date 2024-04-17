@@ -34,31 +34,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
-struct renderNode {
-	char pad_01[0x28]; // 0x00(0x28)
-	unsigned __int64 rnd_flags; // 0x28(0x08)
-	char pad_02[0xc]; // 0x30(0xc)
-	unsigned int silhouettes_param; // 0x3c(0x04)
-};
 
-struct entityNameStruct {
-	char name[100];
-};
-
-const char* hunter = "HunterBasic"; // Hunter
-const char* targetSensor = "TargetSensor"; // Boss Lair Grunts.Assassin.Target_Assassin_scripted008_TargetSensor
-const char* eventItem = "tide_of_shadows"; // Event liveevents/tide_of_shadows_2023/ship_altar_scripted330
-const char* grunts = "Grunts"; // Zombie
-
-enum colorType : uint32_t {
-	Red = 0xFF0000FF,
-	Green = 0x00FF00FF,
-	Blue = 0x0000FFFF,
-	Cyan = 0x00FFFFFF,
-	Orange = 0xFFA500FF,
-	Yellow = 0xFFFF00FF,
-	White = 0xFFFFFFFF
-};
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
