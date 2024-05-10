@@ -3,7 +3,7 @@
 class Environment
 {
 private:
-	uint64_t SystemGlobalEnvironment = 0x59A96D0; // This is the only thing that should need updating // https://www.unknowncheats.me/forum/other-fps-games/350352-hunt-showdown-27.html Someone would post it here
+	uint64_t SystemGlobalEnvironment = 0x5EF9FA0; // This is the only thing that should need updating // https://www.unknowncheats.me/forum/other-fps-games/350352-hunt-showdown-27.html Someone would post it here
 	uint64_t EntitySystem = 0xA8;
 	uint64_t pSystem = 0xC0;
 	uint16_t ObjectCount = 0x0;
