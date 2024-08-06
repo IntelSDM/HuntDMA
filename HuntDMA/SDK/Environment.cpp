@@ -3,6 +3,7 @@
 #include "WorldEntity.h"
 #include "Globals.h"
 #include "ConfigUtilities.h"
+
 Environment::Environment()
 {
 	SystemGlobalEnvironment = TargetProcess.Read<uint64_t>(TargetProcess.GetBaseAddress("GameHunt.dll") + SystemGlobalEnvironment);
@@ -11,7 +12,6 @@ Environment::Environment()
 	printf(LIT("EntitySystem: 0x%X\n"), EntitySystem);
 	pSystem = TargetProcess.Read<uint64_t>(SystemGlobalEnvironment + pSystem);
 	printf(LIT("pSystem: 0x%X\n"), pSystem);
-
 }
 
 void Environment::GetEntitys()
@@ -46,7 +46,6 @@ void Environment::UpdatePlayerList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-		
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -78,7 +77,6 @@ void Environment::UpdateZombieList()
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateClass(handle);
-	
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.ExecuteWriteScatter(writehandle);
@@ -88,6 +86,7 @@ void Environment::UpdateZombieList()
 	ZombieList = templist;
 	EnvironmentInstance->ZombieListMutex.unlock();
 }
+
 void Environment::CacheEntities()
 {
 	GetEntitys();
@@ -110,7 +109,6 @@ void Environment::CacheEntities()
 			continue;
 		}
 		entitypointerlist.push_back(std::make_shared<WorldEntity>(entity));
-
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
@@ -120,8 +118,6 @@ void Environment::CacheEntities()
 		if (ent == nullptr)
 			continue;
 		ent->SetUp(handle);
-	
-
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
@@ -135,15 +131,12 @@ void Environment::CacheEntities()
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
 
-	
 	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
 			continue;
 		ent->SetUp2(handle);
-
-
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
@@ -166,7 +159,6 @@ void Environment::CacheEntities()
 			// print ent->GetRenderNode().rnd_flags
 		
 			ent->SetType(EntityType::EnemyPlayer);
-
 			templayerlist.push_back(ent);
 			//printf(LIT("Entity Flags: %d\n"), ent->GetRenderNode().rnd_flags);
 			//printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
@@ -177,19 +169,11 @@ void Environment::CacheEntities()
 			// print ent->GetRenderNode().rnd_flags
 
 			ent->SetType(EntityType::EnemyPlayer);
-
 			templayerlist.push_back(ent);
 		//	printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
 			continue;
 		}
-		
-		if (strstr(ent->GetEntityClassName().name, "Immolator") != NULL)
-		{
-			ent->SetType(EntityType::Immolator);
-			tempzombielist.push_back(ent);
-			continue;
-		}
-		if (strstr(ent->GetEntityClassName().name, "grunt_base") != NULL)
+		if (strstr(ent->GetEntityClassName().name, "target_assassin") != NULL)
 		{
 			ent->SetType(EntityType::Zombie);
 			tempzombielist.push_back(ent);
@@ -207,24 +191,25 @@ void Environment::CacheEntities()
 			tempzombielist.push_back(ent);
 			continue;
 		}
-		if (strstr(ent->GetEntityClassName().name, "dog_base") != NULL)
+		if (strstr(ent->GetEntityClassName().name, "target_scrapbeak") != NULL)
 		{
 			ent->SetType(EntityType::Dog);
 			tempzombielist.push_back(ent);
 			continue;
 		}
-		if (strstr(ent->GetEntityClassName().name, "Waterdevil") != NULL)
+		if (strstr(ent->GetEntityClassName().name, "target_rotjaw") != NULL)
 		{
 			ent->SetType(EntityType::WaterDevil);
 			tempzombielist.push_back(ent);
 			continue;
 		}
-		if (((std::string)ent->GetEntityClassName().name) == "special_meathead")
+		/* if (((std::string)ent->GetEntityClassName().name) == "special_meathead")
 		{
 			ent->SetType(EntityType::MeatHead);
 			tempzombielist.push_back(ent);
 			continue;
 		}
+		*/
 		if (((std::string)ent->GetEntityClassName().name) == "AmmoSwapBox")
 		{
 			ent->SetType(EntityType::AmmoBox);
@@ -249,21 +234,13 @@ void Environment::CacheEntities()
 			tempstaticlist.push_back(ent);
 			continue;
 		}
-		if (strstr(ent->GetEntityName().name, "Grunts") != NULL)
-		{
-			ent->SetType(EntityType::Zombie);
-			tempzombielist.push_back(ent);
-			continue;
-		}
 		//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
 		//	printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
 		//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
 		//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
 		//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
 		//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
-
 	}
-
 
 	handle = TargetProcess.CreateScatterHandle();
 	for (std::shared_ptr<WorldEntity> ent : templayerlist)
@@ -271,23 +248,18 @@ void Environment::CacheEntities()
 		if (ent == nullptr)
 			continue;
 		ent->SetUp3(handle);
-
-
 	}
 	for (std::shared_ptr<WorldEntity> ent : tempzombielist)
 	{
 		if (ent == nullptr)
 			continue;
 		ent->SetUp3(handle);
-
-
 	}
 	for (std::shared_ptr<WorldEntity> ent : tempstaticlist)
 	{
 		if (ent == nullptr)
 			continue;
 		ent->SetUp3(handle);
-
 	}
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
@@ -298,12 +270,8 @@ void Environment::CacheEntities()
 		{
 			ent->SetType(EntityType::FriendlyPlayer);
 		}
-
-
 	}
 
-	
-	
 	PlayerListMutex.lock();
 	PlayerList = templayerlist;
 	PlayerListMutex.unlock();
