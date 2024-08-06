@@ -175,7 +175,7 @@ void Environment::CacheEntities()
 		}
 		if (strstr(ent->GetEntityClassName().name, "target_assassin") != NULL)
 		{
-			ent->SetType(EntityType::Zombie);
+			ent->SetType(EntityType::Assassin);
 			tempzombielist.push_back(ent);
 			continue;
 		}
@@ -193,13 +193,13 @@ void Environment::CacheEntities()
 		}
 		if (strstr(ent->GetEntityClassName().name, "target_scrapbeak") != NULL)
 		{
-			ent->SetType(EntityType::Dog);
+			ent->SetType(EntityType::Scrapbeak);
 			tempzombielist.push_back(ent);
 			continue;
 		}
 		if (strstr(ent->GetEntityClassName().name, "target_rotjaw") != NULL)
 		{
-			ent->SetType(EntityType::WaterDevil);
+			ent->SetType(EntityType::Rotjaw);
 			tempzombielist.push_back(ent);
 			continue;
 		}
