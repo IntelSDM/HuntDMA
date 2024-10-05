@@ -46,7 +46,7 @@ void Environment::UpdatePlayerList()
 			continue;
 		}
 		if (Configs.Player.Chams)
-		ent->WriteNode(writehandle, Configs.Player.ChamMode);
+			ent->WriteNode(writehandle, Configs.Player.ChamMode, Configs.Player.Chams);
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
 		ent->UpdateHealth(handle);
@@ -307,13 +307,13 @@ void Environment::CacheEntities()
 		}
 		else if ((std::string)(entityClassName) == "Explodable_Object")
 		{
-			ent->SetType(EntityType::Explosive);
+			ent->SetType(EntityType::Barrel);
 			tempstaticlist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "BioBarrel")
 		{
-			ent->SetType(EntityType::Explosive);
+			ent->SetType(EntityType::Barrel);
 			tempstaticlist.push_back(ent);
 			continue;
 		}
