@@ -88,9 +88,8 @@ void DrawPlayers()
 				continue;
 			std::wstring wname = Configs.Player.Name ? ent->GetName() : L"";
 			std::wstring wdistance = Configs.Player.Distance ? L"[" + std::to_wstring(distance) + L"m]" : L"";
-			DrawText(pos.x, pos.y, wname + wdistance, "Verdana", Configs.Player.FontSize, ent->GetType() == EntityType::FriendlyPlayer ? Configs.Player.FriendColour : Configs.Player.TextColour, Centre);
-
-
+			std::wstring whealth = std::to_wstring(ent->GetHealth().current_hp) + L"/" + std::to_wstring(ent->GetHealth().current_max_hp) + L"[" + std::to_wstring(ent->GetHealth().regenerable_max_hp) + L"]";
+			DrawText(pos.x, pos.y, wname + wdistance + L"\n" + whealth, "Verdana", Configs.Player.FontSize, ent->GetType() == EntityType::FriendlyPlayer ? Configs.Player.FriendColour : Configs.Player.TextColour, Centre);
 		}
 	}
 }

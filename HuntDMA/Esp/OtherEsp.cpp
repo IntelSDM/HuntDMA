@@ -24,7 +24,7 @@ void DrawOtherEsp()
 		if (ent == nullptr)
 			continue;
 
-		if (ent->GetType() == EntityType::BearTrap || ent->GetType() == EntityType::PoisonTrap)
+		if (ent->GetType() == EntityType::BearTrap || ent->GetType() == EntityType::TripMine || ent->GetType() == EntityType::Barrel)
 		{
 			int distance = (int)Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition());
 			if (distance <= 0)

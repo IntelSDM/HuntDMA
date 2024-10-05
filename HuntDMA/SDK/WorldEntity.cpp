@@ -9,25 +9,28 @@ WorldEntity::WorldEntity( uint64_t entity)
 }
 void WorldEntity::SetUp(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->Class + HpOffset1, &HpPointer1, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + PosOffset, &Position, sizeof(Vector3));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + StringBufferOffset, &EntityNamePointer, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + ClassPointerOffset,&ClassPointer, sizeof(uint64_t));
 	if (Class != 0)
-	TargetProcess.AddScatterReadRequest(handle, this->Class + SlotsPointerOffset, &SlotsPointer, sizeof(uint64_t));
-		else
+		TargetProcess.AddScatterReadRequest(handle, this->Class + SlotsPointerOffset, &SlotsPointer, sizeof(uint64_t));
+	else
 		SlotsPointer = 0;
 }
 void WorldEntity::SetUp1(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->HpPointer1 + HpOffset2, &HpPointer2, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle,this->EntityNamePointer, &EntityName, sizeof(EntityNameStruct));
 	TargetProcess.AddScatterReadRequest(handle, this->ClassPointer + StringBufferOffset,&ClassNamePointer, sizeof(uint64_t));
 	if (SlotsPointer != 0)
-	TargetProcess.AddScatterReadRequest(handle, this->SlotsPointer, &Slot, sizeof(uint64_t));
+		TargetProcess.AddScatterReadRequest(handle, this->SlotsPointer, &Slot, sizeof(uint64_t));
 	else
 		Slot = 0;
 }
 void WorldEntity::SetUp2(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->HpPointer2 + HpOffset3, &HpPointer3, sizeof(uint64_t));
 	if (Slot != 0)
 		TargetProcess.AddScatterReadRequest(handle, this->Slot + RenderNodePointerOffset, &RenderNodePointer, sizeof(uint64_t));
 	else
@@ -37,12 +40,17 @@ void WorldEntity::SetUp2(VMMDLL_SCATTER_HANDLE handle)
 }
 void WorldEntity::SetUp3(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->HpPointer3 + HpOffset4, &HpPointer4, sizeof(uint64_t));
 	ClassName.name[99] = '\0';
 	EntityName.name[99] = '\0';
 	TargetProcess.AddScatterReadRequest(handle, RenderNodePointer, &Node, sizeof(RenderNode));
 }
+void WorldEntity::SetUp4(VMMDLL_SCATTER_HANDLE handle)
+{
+	TargetProcess.AddScatterReadRequest(handle, this->HpPointer4 + HpOffset5, &HpPointer5, sizeof(uint64_t));
+}
 
-void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle,int colour)
+void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle, int colour, bool show)
 {
 	uint32_t convertedcolour = 0;
 	/*	std::vector<std::wstring>{LIT(L"Outline Red"), LIT(L"Outline Blue"), LIT(L"Outline Yellow"), LIT(L"Outline Orange"), LIT(L"Outline Cyan"), LIT(L"Outline White"),
@@ -84,8 +92,6 @@ void WorldEntity::WriteNode(VMMDLL_SCATTER_HANDLE handle,int colour)
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x10, &allmap, sizeof(uint64_t)); // change render flag to max distance, allows us to use chams at further distances as long as the model isn't culled.
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x2C, &convertedcolour, sizeof(uint32_t));
 		TargetProcess.AddScatterWriteRequest(handle, RenderNodePointer + 0x38, &maxdistance, sizeof(float));
-		// printf RenderNodePointer
-		//printf("RenderNodePointer: %llx\n", RenderNodePointer);
 	}
 }
 
@@ -97,6 +103,11 @@ void WorldEntity::UpdatePosition(VMMDLL_SCATTER_HANDLE handle)
 void WorldEntity::UpdateNode(VMMDLL_SCATTER_HANDLE handle)
 {
 	TargetProcess.AddScatterReadRequest(handle, RenderNodePointer, &Node, sizeof(RenderNode));
+}
+
+void WorldEntity::UpdateHealth(VMMDLL_SCATTER_HANDLE handle)
+{
+	TargetProcess.AddScatterReadRequest(handle, HpPointer5, &Health, sizeof(HealthBar));
 }
 
 void WorldEntity::UpdateClass(VMMDLL_SCATTER_HANDLE handle)
