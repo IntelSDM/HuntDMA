@@ -55,8 +55,8 @@ void CreateGUI()
 			auto friendcolour = std::make_shared<ColourPicker>(200, 86, &Configs.Player.FriendColour);
 			playeresptab->Push(friendcolour);
 			auto chammode = std::make_shared<DropDown>(100, 115, LIT(L"Cham Mode"), &Configs.Player.ChamMode,
-				std::vector<std::wstring>{LIT(L"Outline Red"), LIT(L"Outline Blue"), LIT(L"Outline Yellow"), LIT(L"Outline Orange"), LIT(L"Outline Cyan"), LIT(L"Outline White"),
-				LIT(L"Filled Red"), LIT(L"Filled Blue"), LIT(L"Filled Yellow"), LIT(L"Filled Orange"), LIT(L"Filled Cyan"), LIT(L"Filled White")});
+				std::vector<std::wstring>{LIT(L"Outline Red"), LIT(L"Outline Blue"), LIT(L"Outline Yellow"), LIT(L"Outline Orange"), LIT(L"Outline Cyan"), LIT(L"Outline Magenta"), LIT(L"Outline White"),
+				LIT(L"Filled Red"), LIT(L"Filled Blue"), LIT(L"Filled Yellow"), LIT(L"Filled Orange"), LIT(L"Filled Cyan"), LIT(L"Filled Magenta"), LIT(L"Filled White")});
 			playeresptab->Push(chammode);
 			auto maxdistance = std::make_shared<Slider<int>>(100, 140, 150, LIT(L"Max Distance"), LIT(L"m"), 0, 1000, &Configs.Player.MaxDistance);
 			playeresptab->Push(maxdistance);

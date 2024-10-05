@@ -170,7 +170,7 @@ void Environment::CacheEntities()
 
 			ent->SetType(EntityType::EnemyPlayer);
 			templayerlist.push_back(ent);
-		//	printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
+			//printf(LIT("Entity Ent Name: %s\n"), ent->GetEntityClassName().name);
 			continue;
 		}
 		if (strstr(ent->GetEntityClassName().name, "target_assassin") != NULL)
@@ -200,6 +200,12 @@ void Environment::CacheEntities()
 		if (strstr(ent->GetEntityClassName().name, "target_rotjaw") != NULL)
 		{
 			ent->SetType(EntityType::Rotjaw);
+			tempzombielist.push_back(ent);
+			continue;
+		}
+		if (strstr(ent->GetEntityClassName().name, "immolator_elite") != NULL)
+		{
+			ent->SetType(EntityType::Hellborn);
 			tempzombielist.push_back(ent);
 			continue;
 		}
@@ -234,12 +240,12 @@ void Environment::CacheEntities()
 			tempstaticlist.push_back(ent);
 			continue;
 		}
-		//	printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
-		//	printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
-		//	printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
-		//	printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
-		//	Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
-		//	printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
+		//printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
+		//printf(LIT("Entity ClassName: %s\n"), ent->GetEntityClassName().name);
+		//printf(LIT("Entity Class: %s\n"), ent->GetEntityName().name);
+		//printf(LIT("Entity Silhouettes: %d\n"), ent->GetRenderNode().silhouettes_param);
+		//Vector2 screenpos = CameraInstance->WorldToScreen(ent->GetPosition());
+		//printf(LIT("Entity Screen Position: %f %f\n"), screenpos.x, screenpos.y);
 	}
 
 	handle = TargetProcess.CreateScatterHandle();

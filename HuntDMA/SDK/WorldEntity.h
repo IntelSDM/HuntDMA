@@ -1,12 +1,12 @@
 #pragma once
 #include "Memory.h"
 struct RenderNode {
-	char pad_01[0x28]; // 0x00(0x28)
-	unsigned __int64 rnd_flags; // 0x28(0x08)
-	char pad_02[0xc]; // 0x30(0xc)
-	unsigned int silhouettes_param; // 0x3c(0x04)
-	char pad_03[0x8];
-	float m_fWSMaxViewDist; //0x48
+	char pad_01[0x10]; // 0x00(0x10)
+	unsigned __int64 rnd_flags; // 0x10(0x08)
+	char pad_02[0x14]; // 0x18(0x14)
+	unsigned int silhouettes_param; // 0x2C(0x04)
+	char pad_03[0x8]; // 0x30(0x8)
+	float m_fWSMaxViewDist; //0x38(0x4)
 };
 struct EntityNameStruct {
 	char name[100];
@@ -21,6 +21,7 @@ enum class EntityType : int
 	Immolator,
 	Scrapbeak,
 	Rotjaw,
+	Hellborn,
 	MeatHead,
 	SupplyBox,
 	AmmoBox,
@@ -33,12 +34,12 @@ class WorldEntity
 private:
 	uint64_t Class = 0x0;
 	uint64_t ClassAddress = 0x0;
-	uint64_t PosOffset = 0x128;
+	uint64_t PosOffset = 0x134;
 	uint64_t StringBufferOffset = 0x10;
 	uint64_t ClassPointerOffset = 0x18;
 	uint64_t SlotsPointerOffset = 0xA8;
 	uint64_t SlotOffset = 0x0;
-	uint64_t RenderNodePointerOffset = 0xA8;
+	uint64_t RenderNodePointerOffset = 0xA0;
 	RenderNode Node;
 	EntityNameStruct EntityName;
 	EntityNameStruct ClassName;
@@ -61,7 +62,8 @@ private:
 		{EntityType::Immolator, L"Immolator"},
 		{EntityType::Spider, L"Spider"},
 		{EntityType::Rotjaw, L"Rotjaw"},
-		{EntityType::MeatHead, L"Fat BOI"},
+		{EntityType::Hellborn, L"Hellborn"},
+		{EntityType::MeatHead, L"MeatHead"},
 		{EntityType::SupplyBox, L"Supply Box"},
 		{EntityType::AmmoBox, L"Ammo Box"},
 		{EntityType::BearTrap, L"Bear Trap"},
