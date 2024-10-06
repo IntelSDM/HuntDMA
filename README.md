@@ -31,7 +31,7 @@ To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https:
 * Player ESP
   * Name
   * Distance
-  * Health
+  * **Health**
   * Chams
   * Friendly Colour
   * Cham Colour
@@ -41,14 +41,15 @@ To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https:
 * Supply ESP
   * Name
   * Distance
+* BloodBound ESP
+  * Name
+  * Distance
 * Trap ESP
   * Name
   * Distance
-* Overlay
-  * Custom Resolution
-  * Crosshair
-  * Crosshair Mode
-  * Crosshair Size
+* Points of Interest ESP
+  * Name
+  * Distance
 * Config
   * Load
   * Save
