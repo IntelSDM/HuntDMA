@@ -1,7 +1,10 @@
 #pragma once
 #include "ConfigInstance.h"
-void SaveConfig(const std::wstring& config);
-void LoadConfig(const std::wstring& config);
-std::vector<std::wstring> GetAllConfigs();
+
+extern std::filesystem::path DefaultConfigPath;
+extern std::filesystem::path ConfigPath;
 extern ConfigInstances Configs;
 extern void SetUpConfig();
+
+void SaveConfig(const std::filesystem::path& filePath);
+void LoadConfig(const std::filesystem::path& filePath);

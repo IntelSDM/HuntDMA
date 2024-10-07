@@ -38,6 +38,7 @@ void Environment::UpdatePlayerList()
 			continue;
 		if (Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition()) <= 1.6f) // Self Player
 		{
+			TargetProcess.AddScatterReadRequest(handle, ent->SpecCountPointer4 + ent->SpecCountOffset5, &ent->SpecCount, sizeof(int));
 			continue;
 		}	
 		if (!(ent->GetClass() > 0x2000000 && ent->GetClass() < 0x7FFFFFFFFFFF))
@@ -45,7 +46,7 @@ void Environment::UpdatePlayerList()
 			ent->SetValid(false); // check if the player is still alive/ active
 			continue;
 		}
-		if (Configs.Player.Chams)
+		if (Configs.Player.Chams && (Configs.Player.DrawFriends || ent->GetType() != EntityType::FriendlyPlayer))
 			ent->WriteNode(writehandle, Configs.Player.ChamMode, Configs.Player.Chams);
 		ent->UpdateNode(handle);
 		ent->UpdatePosition(handle);
@@ -56,16 +57,29 @@ void Environment::UpdatePlayerList()
 	TargetProcess.ExecuteWriteScatter(writehandle);
 	TargetProcess.CloseScatterHandle(handle);
 
+	for (size_t index = 0; index < templist.size(); ++index)
+	{
+		std::shared_ptr<WorldEntity> ent = templist[index];
+		if (ent == nullptr)
+			continue;
+		if (Vector3::Distance(ent->GetPosition(), CameraInstance->GetPosition()) <= 1.6f) // Self Player
+		{
+			EnvironmentInstance->SpectatorCountMutex.lock();
+			SpectatorCount = ent->SpecCount;
+			EnvironmentInstance->SpectatorCountMutex.unlock();
+		}
+	}
+
 	EnvironmentInstance->PlayerListMutex.lock();
 	PlayerList = templist;
 	EnvironmentInstance->PlayerListMutex.unlock();
 }
 
-void Environment::UpdateZombieList()
+void Environment::UpdateBossesList()
 {
-	EnvironmentInstance->ZombieListMutex.lock();
-	std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetZombieList();
-	EnvironmentInstance->ZombieListMutex.unlock();
+	EnvironmentInstance->BossesListMutex.lock();
+	std::vector<std::shared_ptr<WorldEntity>> templist = EnvironmentInstance->GetBossesList();
+	EnvironmentInstance->BossesListMutex.unlock();
 	if (templist.size() == 0)
 		return;
 	auto handle = TargetProcess.CreateScatterHandle();
@@ -88,9 +102,9 @@ void Environment::UpdateZombieList()
 	TargetProcess.ExecuteWriteScatter(writehandle);
 	TargetProcess.CloseScatterHandle(handle);
 
-	EnvironmentInstance->ZombieListMutex.lock();
-	ZombieList = templist;
-	EnvironmentInstance->ZombieListMutex.unlock();
+	EnvironmentInstance->BossesListMutex.lock();
+	BossesList = templist;
+	EnvironmentInstance->BossesListMutex.unlock();
 }
 
 void Environment::CacheEntities()
@@ -153,7 +167,10 @@ void Environment::CacheEntities()
 
 	std::vector<std::shared_ptr<WorldEntity>> templayerlist;
 	std::vector<std::shared_ptr<WorldEntity>> tempbosseslist;
-	std::vector<std::shared_ptr<WorldEntity>> tempstaticlist;
+	std::vector<std::shared_ptr<WorldEntity>> tempsupplylist;
+	std::vector<std::shared_ptr<WorldEntity>> tempboodboundslist;
+	std::vector<std::shared_ptr<WorldEntity>> temptraplist;
+	std::vector<std::shared_ptr<WorldEntity>> temppoilist;
 	for (std::shared_ptr<WorldEntity> ent : entitypointerlist)
 	{
 		if (ent == nullptr)
@@ -196,7 +213,7 @@ void Environment::CacheEntities()
 			tempbosseslist.push_back(ent);
 			continue;
 		}
-		else if (strstr(entityClassName, "special_spider") != NULL)
+		else if (strstr(entityClassName, "target_spider") != NULL)
 		{
 			ent->SetType(EntityType::Spider);
 			tempbosseslist.push_back(ent);
@@ -223,30 +240,30 @@ void Environment::CacheEntities()
 		else if (strstr(entityClassName, "ExtractionPoint") != NULL)
 		{
 			ent->SetType(EntityType::ExtractionPoint);
-			tempstaticlist.push_back(ent);
+			temppoilist.push_back(ent);
 			continue;
 		}
 		else if (strstr(entityClassName, "cash_register_golden") != NULL)
 		{
 			ent->SetType(EntityType::GoldCashRegister);
-			tempstaticlist.push_back(ent);
+			tempboodboundslist.push_back(ent);
 			continue;
 		}
 		else if (strstr(entityClassName, "cash_register") != NULL)
 		{
 			ent->SetType(EntityType::CashRegister);
-			tempstaticlist.push_back(ent);
+			temppoilist.push_back(ent);
 			continue;
 		}
 		else if (strstr(entityClassName, "currency_collection") != NULL)
 		{
 			ent->SetType(EntityType::CurrencyCollection);
-			tempstaticlist.push_back(ent);
+			tempboodboundslist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "AmmoSwapBox")
 		{
-			ent->SetType(EntityType::AmmoBox);
+			ent->SetType(EntityType::AmmoSwapBox);
 
 			if (strstr(entityName, "bullets_spitzer") != NULL)
 			{
@@ -259,7 +276,6 @@ void Environment::CacheEntities()
 			else if (strstr(entityName, "bullets_highvelocity") != NULL)
 			{
 				ent->SetType(EntityType::HighVelocityBullets);
-
 			}
 			else if (strstr(entityName, "bullets_incendiary") != NULL)
 			{
@@ -302,19 +318,19 @@ void Environment::CacheEntities()
 				ent->SetType(EntityType::SlugShells);
 			}
 
-			tempstaticlist.push_back(ent);
+			tempsupplylist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "Explodable_Object")
 		{
 			ent->SetType(EntityType::Barrel);
-			tempstaticlist.push_back(ent);
+			temptraplist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "BioBarrel")
 		{
-			ent->SetType(EntityType::Barrel);
-			tempstaticlist.push_back(ent);
+			ent->SetType(EntityType::BioBarrel);
+			temptraplist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "Supply_Box")
@@ -322,7 +338,7 @@ void Environment::CacheEntities()
 			ent->SetType(EntityType::SupplyBox);
 			if (strstr(entityName, "ammo_crate_normal") != NULL) // only in training mode
 			{
-				ent->SetType(EntityType::AmmoBox);
+				ent->SetType(EntityType::AmmoCrate);
 			}
 			else if (strstr(entityName, "ammo_crate_special") != NULL) // only in training mode
 			{
@@ -334,7 +350,7 @@ void Environment::CacheEntities()
 			}
 			else if (strstr(entityName, "ammo_box") != NULL)
 			{
-				ent->SetType(EntityType::AmmoBox);
+				ent->SetType(EntityType::AmmoCrate);
 			}
 			else if (strstr(entityName, "ammo_package_medium") != NULL)
 			{
@@ -357,19 +373,19 @@ void Environment::CacheEntities()
 				ent->SetType(EntityType::Medkit);
 			}
 
-			tempstaticlist.push_back(ent);
+			tempsupplylist.push_back(ent);
 			continue;
 		}
 		else if ((std::string)(entityClassName) == "beartrap")
 		{
 			ent->SetType(EntityType::BearTrap);
-			tempstaticlist.push_back(ent);
+			temptraplist.push_back(ent);
 			continue;
 		}
 		else if (((std::string)entityClassName).find("TripMine") != std::string::npos && ((std::string)entityClassName).find("2") == std::string::npos)
 		{
 			ent->SetType(EntityType::TripMine);
-			tempstaticlist.push_back(ent);
+			temptraplist.push_back(ent);
 			continue;
 		}
 		//printf(LIT("Entity Position: %f %f %f\n"), ent->GetPosition().x, ent->GetPosition().y, ent->GetPosition().z);
@@ -393,7 +409,25 @@ void Environment::CacheEntities()
 			continue;
 		ent->SetUp3(handle);
 	}
-	for (std::shared_ptr<WorldEntity> ent : tempstaticlist)
+	for (std::shared_ptr<WorldEntity> ent : tempsupplylist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+	}
+	for (std::shared_ptr<WorldEntity> ent : tempboodboundslist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+	}
+	for (std::shared_ptr<WorldEntity> ent : temptraplist)
+	{
+		if (ent == nullptr)
+			continue;
+		ent->SetUp3(handle);
+	}
+	for (std::shared_ptr<WorldEntity> ent : temppoilist)
 	{
 		if (ent == nullptr)
 			continue;
@@ -423,10 +457,37 @@ void Environment::CacheEntities()
 	PlayerListMutex.lock();
 	PlayerList = templayerlist;
 	PlayerListMutex.unlock();
-	ZombieListMutex.lock();
-	ZombieList = tempbosseslist;
-	ZombieListMutex.unlock();
-	StaticListMutex.lock();
-	StaticList = tempstaticlist;
-	StaticListMutex.unlock();
+
+	BossesListMutex.lock();
+	BossesList = tempbosseslist;
+	BossesListMutex.unlock();
+
+	SupplyListMutex.lock();
+	SupplyList = tempsupplylist;
+	SupplyListMutex.unlock();
+
+	BloodBondsListMutex.lock();
+	BloodBondsList = tempboodboundslist;
+	BloodBondsListMutex.unlock();
+
+	TrapListMutex.lock();
+	TrapList = temptraplist;
+	TrapListMutex.unlock();
+
+	POIListMutex.lock();
+	POIList = temppoilist;
+	POIListMutex.unlock();
+}
+
+void Environment::ClearConsole()
+{
+#if defined _WIN32
+	system("cls");
+	//clrscr(); // including header file : conio.h
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+	system("clear");
+	//std::cout<< u8"\033[2J\033[1;1H"; //Using ANSI Escape Sequences 
+#elif defined (__APPLE__)
+	system("clear");
+#endif
 }

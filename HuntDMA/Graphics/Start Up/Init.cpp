@@ -9,6 +9,10 @@
 #include "Aimbot.h"
 #include "InputManager.h"
 #include "Kmbox.h"
+#include "FPS.h"
+#include <chrono>
+#include "SpectatorAlarm.h"
+
 ID2D1Factory* Factory;
 IDWriteFactory* FontFactory;
 ID2D1HwndRenderTarget* RenderTarget;
@@ -53,20 +57,21 @@ void CleanD2D()
 
 int FrameRate()
 {
-	static int fps;
-	static int lastfps;
-	static float lasttime;
-	static float time;
+	static int fps = 0;
+	static int lastfps = 0;
+	static auto lasttime = std::chrono::steady_clock::now();
 
-	time = clock() * 0.001f;
+	auto currenttime = std::chrono::steady_clock::now();
+	std::chrono::duration<float> elapsed = currenttime - lasttime;
 	fps++;
-	float DeltaTime = time - lasttime;
-	if ((DeltaTime) >= 1.0f)
+
+	if (elapsed.count() >= 1.0f)
 	{
-		lasttime = time;
+		lasttime = currenttime;
 		lastfps = fps;
 		fps = 0;
 	}
+
 	return lastfps;
 }
 
@@ -84,7 +89,7 @@ std::shared_ptr<CheatFunction> Cache = std::make_shared<CheatFunction>(8000, [] 
 		return;
 	EnvironmentInstance->GetEntityList();
 	EnvironmentInstance->CacheEntities();
-	});
+});
 
 std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, [] {
 	if (EnvironmentInstance == nullptr)
@@ -95,7 +100,8 @@ std::shared_ptr<CheatFunction> UpdateCam = std::make_shared<CheatFunction>(5, []
 	CameraInstance->UpdateCamera(handle);
 	TargetProcess.ExecuteReadScatter(handle);
 	TargetProcess.CloseScatterHandle(handle);
-	});
+});
+
 void DrawCrosshair()
 {
 	Vector2 centre = Vector2(Configs.Overlay.OverrideResolution ? Configs.Overlay.Width / 2 : GetSystemMetrics(SM_CXSCREEN) / 2, Configs.Overlay.OverrideResolution ? Configs.Overlay.Height * 0.6f : GetSystemMetrics(SM_CYSCREEN) * 0.6f);
@@ -128,6 +134,7 @@ void DrawCrosshair()
 
 	}
 }
+
 void CacheThread()
 {
 	while (true)
@@ -139,6 +146,7 @@ void CacheThread()
 		Cache->Execute();
 	}
 }
+
 void InitD2D(HWND hWnd)
 {
 	HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &Factory);
@@ -163,7 +171,6 @@ void InitD2D(HWND hWnd)
 
 void RenderFrame()
 {
-
 	if (EnvironmentInstance == nullptr)
 	{
 		InitialiseClasses();
@@ -183,14 +190,17 @@ void RenderFrame()
 
 	UpdateCam->Execute();
 	UpdatePlayers->Execute();
-	UpdateZombies->Execute();
-	Aimbot();
+	UpdateBosses->Execute();
+	//Aimbot();
 	RenderTarget->BeginDraw();
 	RenderTarget->Clear(Colour(0, 0, 0, 255)); // clear over the last buffer
 	RenderTarget->SetTransform(D2D1::Matrix3x2F::Identity()); // set new transform
+	DrawSpectators();
 	DrawPlayers();
+	DrawBosses();
 	DrawOtherEsp();
-	DrawCrosshair();
+	//DrawCrosshair();
+	DrawFPS();
 	Render();
 	RenderTarget->EndDraw();
 }

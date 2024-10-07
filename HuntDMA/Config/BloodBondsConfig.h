@@ -1,20 +1,20 @@
 #pragma once
 #include "pch.h"
-class ZombieConfig
+class BloodBondsConfig
 {
     std::string ConfigName;
 
 public:
-    ZombieConfig(const std::string& name)
+    BloodBondsConfig(const std::string& name)
     {
         ConfigName = name;
     }
     bool Enable = true;
     bool Name = true;
     bool Distance = true;
-    int MaxDistance = 1000;
-    D2D1::ColorF TextColour = Colour(255, 255, 0);
-    int FontSize = 11;
+    int MaxDistance = 1500;
+    D2D1::ColorF TextColour = Colour(255, 165, 0);
+    int FontSize = 13;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {
         (*j)[ConfigName][name][LIT("r")] = colour->r;

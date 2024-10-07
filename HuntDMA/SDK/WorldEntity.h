@@ -39,6 +39,9 @@ enum class EntityType : int
 	TripMine,
 
 	Barrel,
+	BioBarrel,
+
+	AmmoSwapBox,
 	SpitzerBullets,
 	PoisonBullets,
 	HighVelocityBullets,
@@ -56,11 +59,10 @@ enum class EntityType : int
 	SupplyBox,
 	AmmoCrate,
 	SpecialAmmoCrate,
-	AmmoBox,
-	MediumAmmoPackage,
-	ShotgunAmmoPackage,
 	CompactAmmoPackage,
+	MediumAmmoPackage,
 	LongAmmoPackage,
+	ShotgunAmmoPackage,
 	Medkit,
 };
 
@@ -122,7 +124,9 @@ private:
 		{EntityType::TripMine, L"Trip Mine"},
 
 		{EntityType::Barrel, L"Barrel"},
+		{EntityType::BioBarrel, L"Bio Barrel"},
 
+		{EntityType::AmmoSwapBox, L"AmmoSwap Box"},
 		{EntityType::SpitzerBullets, L"Spitzer Bullets"},
 		{EntityType::PoisonBullets, L"Poison Bullets"},
 		{EntityType::HighVelocityBullets, L"High Velocity Bullets"},
@@ -140,11 +144,10 @@ private:
 		{EntityType::SupplyBox, L"Supply Box"},
 		{EntityType::AmmoCrate, L"Ammo Crate"},
 		{EntityType::SpecialAmmoCrate, L"Special Ammo Crate"},
-		{EntityType::AmmoBox, L"Ammo Box"},
-		{EntityType::MediumAmmoPackage, L"Medium Ammo Package"},
-		{EntityType::ShotgunAmmoPackage, L"Shotgun Ammo Package"},
 		{EntityType::CompactAmmoPackage, L"Compact Ammo Package"},
+		{EntityType::MediumAmmoPackage, L"Medium Ammo Package"},
 		{EntityType::LongAmmoPackage, L"Long Ammo Package"},
+		{EntityType::ShotgunAmmoPackage, L"Shotgun Ammo Package"},
 		{EntityType::Medkit, L"Medkit"},
 	};
 public:
@@ -170,4 +173,15 @@ public:
 	bool GetValid() { return Valid; }
 	void SetValid(bool valid) { Valid = valid; }
 	std::wstring GetName() { return Names[Type]; };
+
+	uint64_t SpecCountOffset1 = 0x198;
+	uint64_t SpecCountOffset2 = 0x28;
+	uint64_t SpecCountOffset3 = 0xc8;
+	uint64_t SpecCountOffset4 = 0x108;
+	uint64_t SpecCountOffset5 = 0x10;
+	uint64_t SpecCountPointer1 = 0x0;
+	uint64_t SpecCountPointer2 = 0x0;
+	uint64_t SpecCountPointer3 = 0x0;
+	uint64_t SpecCountPointer4 = 0x0;
+	int SpecCount = 0;
 };

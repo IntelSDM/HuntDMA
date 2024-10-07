@@ -26,10 +26,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	InputWndProc(hWnd, message, wParam, lParam);
 	switch (message)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
-		break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+			break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -57,7 +57,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.lpszClassName = L"GUI Framework";
 	RegisterClassEx(&wc);
-
+	//SetProcessDPIAware();
 	hWnd = CreateWindowEx(WS_EX_APPWINDOW, wc.lpszClassName, L"GUI Framework",
 		WS_POPUP,
 		0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), NULL, NULL, hInstance, NULL);
@@ -70,11 +70,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(hWnd, nCmdShow);
 	SetUpConfig();
-	LoadConfig(L"Default.json");
+	LoadConfig(ConfigPath);
 	InitD2D(hWnd);
 	CreateGUI();
 	MSG msg;
-	SetProcessDPIAware();
 	SetInput();
 	while (TRUE)
 	{

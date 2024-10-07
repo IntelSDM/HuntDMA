@@ -12,7 +12,7 @@ public:
     bool Enable = true;
     bool Name = true;
 	bool Distance = true;
-	int MaxDistance = 1000;
+	int MaxDistance = 1500;
 	D2D1::ColorF TextColour = Colour(255, 255, 255);
 	int FontSize = 12;
     bool Chams = true;

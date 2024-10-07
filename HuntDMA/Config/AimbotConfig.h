@@ -9,13 +9,13 @@ public:
     {
         ConfigName = name;
     }
-    bool Enable = true;
+    bool Enable = false;
     int MaxDistance = 250;
-    bool TargetPlayers = true;
+    bool TargetPlayers = false;
     int Priority = 0;
     int FOV = 200;
     int Aimkey = 5;
-    bool DrawFOV = true;
+    bool DrawFOV = false;
     D2D1::ColorF FOVColour = D2D1::ColorF::White;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {

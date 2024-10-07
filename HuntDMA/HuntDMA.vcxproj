@@ -177,8 +177,10 @@
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Memory\Registry.cpp" />
     <ClCompile Include="Misc\CheatFunction.cpp" />
+    <ClCompile Include="Misc\FPS.cpp" />
     <ClCompile Include="Misc\Input.cpp" />
     <ClCompile Include="Misc\Pch\Pch.cpp" />
+    <ClCompile Include="Misc\SpectatorAlarm.cpp" />
     <ClCompile Include="Misc\Vector.cpp" />
     <ClCompile Include="SDK\Camera.cpp" />
     <ClCompile Include="SDK\WorldEntity.cpp" />
@@ -187,13 +189,15 @@
   <ItemGroup>
     <ClInclude Include="Aimbot\Aimbot.h" />
     <ClInclude Include="Config\AimbotConfig.h" />
+    <ClInclude Include="Config\BloodBondsConfig.h" />
     <ClInclude Include="Config\ConfigInstance.h" />
     <ClInclude Include="Config\ConfigUtilities.h" />
     <ClInclude Include="Config\OverlayConfig.h" />
     <ClInclude Include="Config\PlayerConfig.h" />
+    <ClInclude Include="Config\POIConfig.h" />
     <ClInclude Include="Config\SupplyConfig.h" />
     <ClInclude Include="Config\TrapConfig.h" />
-    <ClInclude Include="Config\ZombieConfig.h" />
+    <ClInclude Include="Config\BossesConfig.h" />
     <ClInclude Include="Esp\OtherEsp.h" />
     <ClInclude Include="Esp\PlayerEsp.h" />
     <ClInclude Include="Globals.h" />
@@ -224,8 +228,10 @@
     <ClInclude Include="Memory\Registry.h" />
     <ClInclude Include="Misc\CheatFunction.h" />
     <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Misc\FPS.h" />
     <ClInclude Include="Misc\Input.h" />
     <ClInclude Include="Misc\Pch\Pch.h" />
+    <ClInclude Include="Misc\SpectatorAlarm.h" />
     <ClInclude Include="Misc\Vector.h" />
     <ClInclude Include="SDK\Camera.h" />
     <ClInclude Include="SDK\WorldEntity.h" />

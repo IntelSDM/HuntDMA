@@ -81,8 +81,8 @@ LRESULT CALLBACK InputWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
             UpdateKeyState(VK_RBUTTON, false);
             break;
         case WM_MOUSEMOVE:
-            MousePos.x = static_cast<float>(lParam & 0xFFFF);
-            MousePos.y = static_cast<float>((lParam >> 16) & 0xFFFF);
+            MousePos.x = static_cast<float>(GET_X_LPARAM(lParam));
+            MousePos.y = static_cast<float>(GET_Y_LPARAM(lParam));
             break;
         case WM_XBUTTONUP:
         {

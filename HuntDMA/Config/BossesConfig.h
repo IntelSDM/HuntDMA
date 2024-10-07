@@ -1,20 +1,20 @@
 #pragma once
 #include "pch.h"
-class TrapConfig
+class BossesConfig
 {
     std::string ConfigName;
 
 public:
-    TrapConfig(const std::string& name)
+    BossesConfig(const std::string& name)
     {
         ConfigName = name;
     }
     bool Enable = true;
     bool Name = true;
     bool Distance = true;
-    int MaxDistance = 75;
-    D2D1::ColorF TextColour = Colour(255, 0, 0);
-    int FontSize = 13;
+    int MaxDistance = 1500;
+    D2D1::ColorF TextColour = Colour(255, 255, 0);
+    int FontSize = 11;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {
         (*j)[ConfigName][name][LIT("r")] = colour->r;

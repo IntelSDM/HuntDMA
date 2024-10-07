@@ -9,6 +9,7 @@ WorldEntity::WorldEntity( uint64_t entity)
 }
 void WorldEntity::SetUp(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->Class + SpecCountOffset1, &SpecCountPointer1, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + HpOffset1, &HpPointer1, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + PosOffset, &Position, sizeof(Vector3));
 	TargetProcess.AddScatterReadRequest(handle, this->Class + StringBufferOffset, &EntityNamePointer, sizeof(uint64_t));
@@ -20,6 +21,7 @@ void WorldEntity::SetUp(VMMDLL_SCATTER_HANDLE handle)
 }
 void WorldEntity::SetUp1(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->SpecCountPointer1 + SpecCountOffset2, &SpecCountPointer2, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->HpPointer1 + HpOffset2, &HpPointer2, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle,this->EntityNamePointer, &EntityName, sizeof(EntityNameStruct));
 	TargetProcess.AddScatterReadRequest(handle, this->ClassPointer + StringBufferOffset,&ClassNamePointer, sizeof(uint64_t));
@@ -30,6 +32,7 @@ void WorldEntity::SetUp1(VMMDLL_SCATTER_HANDLE handle)
 }
 void WorldEntity::SetUp2(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->SpecCountPointer2 + SpecCountOffset3, &SpecCountPointer3, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->HpPointer2 + HpOffset3, &HpPointer3, sizeof(uint64_t));
 	if (Slot != 0)
 		TargetProcess.AddScatterReadRequest(handle, this->Slot + RenderNodePointerOffset, &RenderNodePointer, sizeof(uint64_t));
@@ -40,6 +43,7 @@ void WorldEntity::SetUp2(VMMDLL_SCATTER_HANDLE handle)
 }
 void WorldEntity::SetUp3(VMMDLL_SCATTER_HANDLE handle)
 {
+	TargetProcess.AddScatterReadRequest(handle, this->SpecCountPointer3 + SpecCountOffset4, &SpecCountPointer4, sizeof(uint64_t));
 	TargetProcess.AddScatterReadRequest(handle, this->HpPointer3 + HpOffset4, &HpPointer4, sizeof(uint64_t));
 	ClassName.name[99] = '\0';
 	EntityName.name[99] = '\0';

@@ -12,7 +12,9 @@ public:
     bool OverrideResolution = false;
     int Width = 1920;
     int Height = 1080;
-    int CrosshairType = 1;
+    bool ShowFPS = true;
+    int FpsFontSize = 15;
+    int CrosshairType = 0;
     int CrosshairSize = 3;
     D2D1::ColorF CrosshairColour = Colour(0, 150, 255);
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
@@ -40,6 +42,8 @@ public:
         j[ConfigName][LIT("OverrideResolution")] = OverrideResolution;
         j[ConfigName][LIT("Width")] = Width;
         j[ConfigName][LIT("Height")] = Height;
+        j[ConfigName][LIT("ShowFPS")] = ShowFPS;
+        j[ConfigName][LIT("FpsFontSize")] = FpsFontSize;
         j[ConfigName][LIT("CrosshairType")] = CrosshairType;
         j[ConfigName][LIT("CrosshairSize")] = CrosshairSize;
         ToJsonColour(&j, LIT("CrosshairColour"), &CrosshairColour);
@@ -56,6 +60,10 @@ public:
             Width = j[ConfigName][LIT("Width")];
         if (j[ConfigName].contains(LIT("Height")))
             Height = j[ConfigName][LIT("Height")];
+        if (j[ConfigName].contains(LIT("ShowFPS")))
+            ShowFPS = j[ConfigName][LIT("ShowFPS")];
+        if (j[ConfigName].contains(LIT("FpsFontSize")))
+            FpsFontSize = j[ConfigName][LIT("FpsFontSize")];
         if (j[ConfigName].contains(LIT("CrosshairType")))
             CrosshairType = j[ConfigName][LIT("CrosshairType")];
         if (j[ConfigName].contains(LIT("CrosshairSize")))
