@@ -12,7 +12,15 @@ public:
     bool Enable = true;
     bool Name = true;
     bool Distance = true;
-    int MaxDistance = 50;
+    bool ShowAmmoSwapBox = false;
+    bool ShowCompactAmmo = false;
+    bool ShowMediumAmmo = false;
+    bool ShowLongAmmo = false;
+    bool ShowShortgunAmmo = false;
+    bool ShowSpecialAmmo = false;
+    bool ShowMedkit = false;
+    bool ShowSupplyBox = false;
+    int MaxDistance = 100;
     D2D1::ColorF TextColour = Colour(0, 255, 0);
     int FontSize = 11;
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
@@ -40,6 +48,14 @@ public:
         j[ConfigName][LIT("Enable")] = Enable;
         j[ConfigName][LIT("Name")] = Name;
         j[ConfigName][LIT("Distance")] = Distance;
+        j[ConfigName][LIT("ShowAmmoSwapBox")] = ShowAmmoSwapBox;
+        j[ConfigName][LIT("ShowCompactAmmo")] = ShowCompactAmmo;
+        j[ConfigName][LIT("ShowMediumAmmo")] = ShowMediumAmmo;
+        j[ConfigName][LIT("ShowLongAmmo")] = ShowLongAmmo;
+        j[ConfigName][LIT("ShowShortgunAmmo")] = ShowShortgunAmmo;
+        j[ConfigName][LIT("ShowSpecialAmmo")] = ShowSpecialAmmo;
+        j[ConfigName][LIT("ShowMedkit")] = ShowMedkit;
+        j[ConfigName][LIT("ShowSupplyBox")] = ShowSupplyBox;
         j[ConfigName][LIT("MaxDistance")] = MaxDistance;
         j[ConfigName][LIT("FontSize")] = FontSize;
         ToJsonColour(&j, LIT("TextColour"), &TextColour);
@@ -56,6 +72,22 @@ public:
             Name = j[ConfigName][LIT("Name")];
         if (j[ConfigName].contains(LIT("Distance")))
             Distance = j[ConfigName][LIT("Distance")];
+        if (j[ConfigName].contains(LIT("ShowAmmoSwapBox")))
+            ShowAmmoSwapBox = j[ConfigName][LIT("ShowAmmoSwapBox")];
+        if (j[ConfigName].contains(LIT("ShowCompactAmmo")))
+            ShowCompactAmmo = j[ConfigName][LIT("ShowCompactAmmo")];
+        if (j[ConfigName].contains(LIT("ShowMediumAmmo")))
+            ShowMediumAmmo = j[ConfigName][LIT("ShowMediumAmmo")];
+        if (j[ConfigName].contains(LIT("ShowLongAmmo")))
+            ShowLongAmmo = j[ConfigName][LIT("ShowLongAmmo")];
+        if (j[ConfigName].contains(LIT("ShowShortgunAmmo")))
+            ShowShortgunAmmo = j[ConfigName][LIT("ShowShortgunAmmo")];
+        if (j[ConfigName].contains(LIT("ShowSpecialAmmo")))
+            ShowSpecialAmmo = j[ConfigName][LIT("ShowSpecialAmmo")];
+        if (j[ConfigName].contains(LIT("ShowMedkit")))
+            ShowMedkit = j[ConfigName][LIT("ShowMedkit")];
+        if (j[ConfigName].contains(LIT("ShowSupplyBox")))
+            ShowSupplyBox = j[ConfigName][LIT("ShowSupplyBox")];
         if (j[ConfigName].contains(LIT("FontSize")))
             FontSize = j[ConfigName][LIT("FontSize")];
         if (j[ConfigName].contains(LIT("MaxDistance")))

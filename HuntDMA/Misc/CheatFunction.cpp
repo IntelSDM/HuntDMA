@@ -1,18 +1,19 @@
 #include "Pch.h"
 #include "CheatFunction.h"
+#include <chrono>
 
-CheatFunction::CheatFunction(int time, std::function<void()> func)
+CheatFunction::CheatFunction(int msTimer, std::function<void()> func)
 {
-	MsSleep = time;
+	MsSleep = msTimer;
 	Function = func;
 }
 
 void CheatFunction::Execute()
 {
-
-	if (GetTickCount64() - LastExecution > MsSleep)
+	auto now = std::chrono::high_resolution_clock::now();
+	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - LastExecution).count() > MsSleep)
 	{
 		Function();
-		LastExecution = GetTickCount64();
+		LastExecution = now;
 	}
 }

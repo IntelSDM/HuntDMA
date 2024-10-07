@@ -6,3 +6,5 @@
 void CleanD2D();
 void InitD2D(HWND hWnd);
 void RenderFrame();
+
+extern int FrameRate();
