@@ -19,14 +19,15 @@ Fully Featured Hunt DMA Cheat With Chams, Fuser ESP
   <img src="Images/4.png"
     style="width: 100%;" />
 </p>
+  
+  
+> [!IMPORTANT]
+> * [Installation Guide](./Instructions.md)
+> * Open menu key - **Insert**
 
-## Instructions
-* [Installation Guide](./Instructions.md)
-* Open menu key - **Insert**
-<br>
 
-To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https://github.com/IntelSDM/HuntDMA/blob/67f7d5836460807b2686d123deeada08e5c76618/HuntDMA/SDK/Environment.h#L6
-[This will likely be on Unknowncheats a day after any updates](https://www.unknowncheats.me/forum/other-fps-games/350352-hunt-showdown.html). Just go to the last page and someone will have posted it after an update.
+To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https://github.com/IntelSDM/HuntDMA/blob/67f7d5836460807b2686d123deeada08e5c76618/HuntDMA/SDK/Environment.h#L6  
+This will likely be on [Unknowncheats](https://www.unknowncheats.me/forum/other-fps-games/350352-hunt-showdown.html) a day after any updates. Just go to the last page and someone will have posted it after an update.
 
 ## Fixed and Supported Features
 * Player ESP
@@ -72,7 +73,7 @@ Also barrels.
 For now only Extraction Point.
 
 ### Spectating alarm
-Can't be turned off for now. Shows you red frame and in big green number how many players are spectating you. Your teammates counts.
+Can't be turned off for now. Shows you red frame and in big green number how many players are spectating you. Your teammates counts!
 
 # Known Issues
 If you start HuntDMA.exe and see ObjectCount < 2000 in the console, cheat will not work, you need to restart Hunt.exe.  
@@ -93,6 +94,7 @@ BloodBound ESP is not working.
 - [x] Don't show players if their hp is <= 0 or > 150
 - [x] Fix "Draw friendly"
 - [x] Fix all "Enable" buttons
+- [x] Spectator count
 - [x] Expand Supply ESP with different tags
 - [x] Add Golden Cash Register ESP
 - [x] Add POI ESP
@@ -105,3 +107,4 @@ BloodBound ESP is not working.
 * [insanefury](https://www.unknowncheats.me/forum/3809820-post343.html)
 * [DMALibrary](https://github.com/Metick/DMALibrary/tree/Master)
 * [Original HuntDMA by InterSDM](https://github.com/IntelSDM/HuntDMA)
+* All amazing folks on UnknownCheats
