@@ -15,9 +15,9 @@ public:
 	int MaxDistance = 1500;
 	D2D1::ColorF TextColour = Colour(255, 255, 255);
 	int FontSize = 12;
-    bool Chams = true;
+    bool Chams = false;
     int ChamMode = 0;
-    bool DrawFriends = true;
+    bool DrawFriends = false;
     D2D1::ColorF FriendColour = Colour(0, 255, 0);
     void ToJsonColour(json* j, const std::string& name, D2D1::ColorF* colour)
     {
