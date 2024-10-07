@@ -2,7 +2,6 @@
 Fully Featured Hunt DMA Cheat With Chams, Fuser ESP 
 
 
-
 ## Showcase
 <a href="https://youtu.be/gfd_oSyAx-0">
   <img src="Images/6.png" alt="Play Video" width="1280" height="540">
@@ -77,4 +76,4 @@ Can't be turned off for now. Shows you red frame and in big green number how man
 * [MemProcFS](https://github.com/ufrisk/MemProcFS)
 * [insanefury](https://www.unknowncheats.me/forum/3809820-post343.html)
 * [DMALibrary](https://github.com/Metick/DMALibrary/tree/Master)
-* [Original HuntDMA](https://github.com/IntelSDM/HuntDMA)
+* [WhiteBrim](https://github.com/Whitebrim)
