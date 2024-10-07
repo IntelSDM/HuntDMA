@@ -31,17 +31,18 @@ To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https:
 * Player ESP
   * Name
   * Distance
-  * **Health**
+  * Health
   * Chams
-  * Friendly Colour
-  * Cham Colour
+  * Friendly Color
+  * Cham Color
 * Boss ESP
   *  Name
   *  Distance
 * Supply ESP
   * Name
   * Distance
-* BloodBound ESP
+  * Toggalable types
+* BloodBound ESP (WIP)
   * Name
   * Distance
 * Trap ESP
@@ -53,6 +54,24 @@ To Update: Change the SystemGlobalEnvironment Offset in SDK/Environment.h https:
 * Config
   * Load
   * Save
+* Spectating alarm
+* FPS
+
+### Player ESP
+It's recommended to turn on after teammates are no longer tagged as enemy players or after raid starts. Then turn it off.
+
+### Supply ESP
+You can choose only your type of ammo, esp will show only nessesary items
+
+### Trap ESP
+Also barrels
+
+### Points of Interest ESP
+For now only Extraction Point
+
+### Spectating alarm
+Can't be turned off for now. Shows you red frame and in big green number how many players are spectating you. Your teammates counts.
+
 ## Credits
 * [PCILeech](https://github.com/ufrisk/pcileech)
 * [MemProcFS](https://github.com/ufrisk/MemProcFS)
